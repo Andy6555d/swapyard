@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwapYard — Member Stock Exchange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C2B39;
+    --paper:#E9ECE6;
+    --paper-card:#FBFBF9;
+    --steel:#5B6B74;
+    --steel-light:#8C99A0;
+    --amber:#E2A73B;
+    --amber-dark:#C4881F;
+    --brick:#A63A2C;
+    --line:#D3D8CE;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.5;
+  }
+  ::selection{background:var(--amber);color:var(--ink);}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--ink);
+    color:var(--paper);
+    border-bottom:3px solid var(--amber);
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Archivo Black',sans-serif;
+    font-size:20px;letter-spacing:0.5px;
+    text-decoration:none;color:var(--paper);
+  }
+  .logo-mark{
+    width:30px;height:30px;
+    background:var(--amber);
+    position:relative;
+    transform:rotate(45deg);
+    flex-shrink:0;
+  }
+  .logo-mark::after{
+    content:"";position:absolute;inset:6px;
+    background:var(--ink);
+  }
+  nav{display:flex;gap:28px;align-items:center;}
+  nav a{
+    font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;
+    text-decoration:none;color:var(--steel-light);
+    padding:6px 0;border-bottom:2px solid transparent;
+    transition:color .15s, border-color .15s;
+  }
+  nav a:hover, nav a.active{color:var(--paper);border-color:var(--amber);}
+  .members-badge{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--ink);
+    background:var(--amber);
+    padding:4px 10px;
+    border-radius:100px;
+    font-weight:600;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--ink);
+    color:var(--paper);
+    padding:64px 0 56px;
+    border-bottom:1px solid #2b3d4d;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:end;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;color:var(--amber);
+    text-transform:uppercase;letter-spacing:0.12em;
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:44px;line-height:1.05;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lede{
+    font-size:16px;color:#B9C2C8;max-width:480px;margin:0 0 28px;
+  }
+  .hero-ctas{display:flex;gap:12px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14px;
+    padding:13px 22px;
+    border-radius:var(--radius);
+    border:2px solid transparent;
+    cursor:pointer;text-decoration:none;
+    transition:transform .12s ease, background .15s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--amber);color:var(--ink);}
+  .btn-primary:hover{background:var(--amber-dark);}
+  .btn-ghost{background:transparent;color:var(--paper);border-color:#3d5062;}
+  .btn-ghost:hover{border-color:var(--paper);}
+
+  .ticker{
+    font-family:'IBM Plex Mono',monospace;
+    border:1px solid #2b3d4d;
+    background:#16222D;
+  }
+  .ticker-row{
+    display:flex;justify-content:space-between;
+    padding:16px 20px;
+    border-bottom:1px solid #2b3d4d;
+  }
+  .ticker-row:last-child{border-bottom:none;}
+  .ticker-row .k{color:#8CA0AC;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;}
+  .ticker-row .v{color:var(--amber);font-size:16px;font-weight:600;}
+
+  /* ---------- FILTER BAR ---------- */
+  .filterbar{
+    position:sticky;top:61px;z-index:40;
+    background:var(--paper-card);
+    border-bottom:1px solid var(--line);
+    padding:16px 0;
+  }
+  .filter-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+  .filter-row input[type="search"]{
+    flex:1;min-width:200px;
+    font-family:'Inter',sans-serif;font-size:14px;
+    padding:11px 14px;
+    border:1.5px solid var(--line);border-radius:var(--radius);
+    background:#fff;color:var(--ink);
+  }
+  select{
+    font-family:'Inter',sans-serif;font-size:14px;font-weight:500;
+    padding:11px 14px;
+    border:1.5px solid var(--line);border-radius:var(--radius);
+    background:#fff;color:var(--ink);
+    cursor:pointer;
+  }
+  input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible{
+    outline:2px solid var(--brick);outline-offset:2px;
+  }
+  .result-count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;color:var(--steel);
+    margin-top:12px;
+  }
+
+  /* ---------- SECTION ---------- */
+  section{padding:44px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:24px;border-bottom:2px solid var(--ink);padding-bottom:12px;
+  }
+  .section-head h2{
+    font-family:'Archivo Black',sans-serif;
+    font-size:24px;margin:0;
+  }
+  .section-head .sub{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);}
+
+  /* ---------- GRID / CARDS ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:22px;
+  }
+  .card{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:visible;
+    position:relative;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .card:hover{box-shadow:0 8px 20px rgba(28,43,57,0.12);transform:translateY(-2px);}
+  .card-media{
+    height:150px;
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    color:rgba(255,255,255,0.85);
+    font-size:12px;letter-spacing:0.06em;text-transform:uppercase;
+    overflow:hidden;
+  }
+  .card-media span{position:relative;z-index:2;background:rgba(0,0,0,0.28);padding:4px 10px;border-radius:100px;}
+  .tag{
+    position:absolute;top:-10px;right:14px;z-index:3;
+    background:var(--amber);color:var(--ink);
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;
+    padding:7px 12px 7px 16px;
+    transform:rotate(3deg);
+    box-shadow:2px 3px 0 rgba(28,43,57,0.25);
+  }
+  .tag::before{
+    content:"";position:absolute;left:6px;top:50%;transform:translateY(-50%);
+    width:5px;height:5px;border-radius:50%;background:var(--ink);
+  }
+  .tag.clearance{background:var(--brick);color:#fff;}
+  .card-body{padding:16px 16px 14px;}
+  .card-cat{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);
+    text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;
+  }
+  .card-title{font-weight:700;font-size:15.5px;margin:0 0 6px;line-height:1.3;}
+  .card-desc{font-size:13px;color:var(--steel);margin:0 0 14px;line-height:1.45;}
+  .card-foot{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:12px;border-top:1px dashed var(--line);
+  }
+  .stamp{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+    color:var(--steel);
+    border:1.5px dashed var(--steel-light);
+    padding:4px 9px;border-radius:100px;
+    transform:rotate(-2deg);
+    display:inline-block;
+  }
+  .contact-link{
+    font-size:12.5px;font-weight:700;color:var(--brick);text-decoration:none;
+  }
+  .contact-link:hover{text-decoration:underline;}
+
+  .empty{
+    text-align:center;padding:60px 20px;
+    border:1.5px dashed var(--line);
+    font-family:'IBM Plex Mono',monospace;color:var(--steel);
+    display:none;
+  }
+
+  /* ---------- LIST STOCK FORM ---------- */
+  .list-section{background:var(--paper-card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;}
+  .dropzone{
+    border:2px dashed var(--steel-light);
+    border-radius:var(--radius);
+    padding:36px 20px;
+    text-align:center;
+    background:var(--paper);
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .dropzone:hover, .dropzone.drag{border-color:var(--amber-dark);background:#f4ecd8;}
+  .dropzone .icon{font-size:28px;margin-bottom:8px;}
+  .dropzone p{margin:4px 0;font-size:13px;color:var(--steel);}
+  .dropzone strong{color:var(--ink);}
+  #preview-strip{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .preview-thumb{
+    width:56px;height:56px;border-radius:var(--radius);
+    background:var(--steel);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;
+  }
+  form{display:flex;flex-direction:column;gap:14px;}
+  .field label{
+    display:block;font-size:12px;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.05em;color:var(--steel);margin-bottom:6px;
+  }
+  .field input[type=text], .field input[type=number], .field textarea, .field select{
+    width:100%;font-family:'Inter',sans-serif;font-size:14px;
+    padding:11px 12px;border:1.5px solid var(--line);border-radius:var(--radius);
+    background:#fff;color:var(--ink);
+  }
+  .field textarea{resize:vertical;min-height:74px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .price-field{position:relative;}
+  .price-field span{
+    position:absolute;left:12px;top:37px;color:var(--steel);font-family:'IBM Plex Mono',monospace;
+  }
+  .price-field input{padding-left:26px;}
+  .submit-row{display:flex;align-items:center;gap:14px;margin-top:6px;}
+  .toast{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#2E6B3E;
+    background:#E4F3E6;border:1px solid #B7DDBC;
+    padding:8px 12px;border-radius:var(--radius);
+    display:none;
+  }
+
+  .how-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  }
+  .how-step{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px 24px;
+    position:relative;
+  }
+  .how-num{
+    font-family:'Archivo Black',sans-serif;
+    font-size:34px;color:var(--amber-dark);
+    line-height:1;margin-bottom:10px;
+  }
+  .how-step h3{
+    font-size:16px;margin:0 0 8px;
+  }
+  .how-step p{
+    font-size:13.5px;color:var(--steel);line-height:1.55;margin:0;
+  }
+
+  footer{
+    padding:28px 0;text-align:center;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);
+  }
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .form-grid{grid-template-columns:1fr;}
+    .how-grid{grid-template-columns:1fr;}
+    h1{font-size:32px;}
+    nav{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="logo" href="#top"><span class="logo-mark"></span>SwapYard</a>
+    <nav>
+      <a href="#browse" class="active">Browse Stock</a>
+      <a href="#list">List Stock</a>
+      <a href="#how">How it Works</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Members-only · No fees · No middleman</div>
+      <h1>Move your aged stock<br>to a member who needs it.</h1>
+      <p class="lede">SwapYard is the group's internal noticeboard for surplus and end-of-line stock. List it, a nearby member outlet buys it, you deliver it — no commission, no public listing.</p>
+      <div class="hero-ctas">
+        <a href="#list" class="btn btn-primary">List Your Stock</a>
+        <a href="#browse" class="btn btn-ghost">Browse Listings</a>
+      </div>
+    </div>
+    <div class="ticker">
+      <div class="ticker-row"><span class="k">Active listings</span><span class="v">37</span></div>
+      <div class="ticker-row"><span class="k">Outlets participating</span><span class="v">54</span></div>
+      <div class="ticker-row"><span class="k">Counties covered</span><span class="v">21</span></div>
+      <div class="ticker-row"><span class="k">Platform fee</span><span class="v">€200.00 / year</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="filterbar" id="browse">
+  <div class="wrap">
+    <div class="filter-row">
+      <input type="search" id="search" placeholder="Search stock — e.g. insulation, radiators, block...">
+      <select id="cat-filter">
+        <option value="">All categories</option>
+        <option>Bricks & Block</option>
+        <option>Timber & Sheet</option>
+        <option>Insulation</option>
+        <option>Heating & Plumbing</option>
+        <option>Roofing</option>
+        <option>Sanitaryware</option>
+      </select>
+      <select id="county-filter">
+        <option value="">All counties</option>
+        <option>Cork</option>
+        <option>Galway</option>
+        <option>Limerick</option>
+        <option>Kildare</option>
+        <option>Donegal</option>
+        <option>Mayo</option>
+      </select>
+    </div>
+    <div class="result-count" id="result-count">Showing 8 of 8 listings</div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="grid" id="grid"><!-- cards injected by JS --></div>
+    <div class="empty" id="empty-state">NO MATCHING STOCK — try clearing a filter or check back later.</div>
+  </div>
+</section>
+
+<section class="list-section" id="list">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>List Surplus Stock</h2>
+      <span class="sub">TAKES ~2 MINUTES</span>
+    </div>
+    <div class="form-grid">
+      <div>
+        <div class="dropzone" id="dropzone">
+          <div class="icon">📦</div>
+          <p><strong>Click to upload photos</strong></p>
+          <p>or drag and drop — up to 6 images</p>
+          <div id="preview-strip"></div>
+        </div>
+        <input type="file" id="file-input" accept="image/*" multiple hidden>
+      </div>
+      <form id="listing-form">
+        <div class="field">
+          <label for="title">Item title</label>
+          <input type="text" id="title" placeholder="e.g. Class B engineering bricks, 400 units" required>
+        </div>
+        <div class="field">
+          <label for="desc">Description</label>
+          <textarea id="desc" placeholder="Condition, quantity, why it's surplus, collection notes..." required></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="cat">Category</label>
+            <select id="cat">
+              <option>Bricks & Block</option>
+              <option>Timber & Sheet</option>
+              <option>Insulation</option>
+              <option>Heating & Plumbing</option>
+              <option>Roofing</option>
+              <option>Sanitaryware</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="county">Outlet county</label>
+            <select id="county">
+              <option>Cork</option>
+              <option>Galway</option>
+              <option>Limerick</option>
+              <option>Kildare</option>
+              <option>Donegal</option>
+              <option>Mayo</option>
+            </select>
+          </div>
+        </div>
+        <div class="field price-field">
+          <label for="price">Price</label>
+          <span>€</span>
+          <input type="number" id="price" placeholder="0.00" min="0" required>
+        </div>
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary">Publish Listing</button>
+          <span class="toast" id="toast">✓ Listing published to your outlet's county group</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How it Works</h2>
+      <span class="sub">THREE STEPS</span>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <h3>List your aged stock</h3>
+        <p>Got stock you no longer need — surplus, end-of-line, or aged? Upload photos, product details, quantity, a brief description, and your asking price.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <h3>A fellow merchant gets in touch</h3>
+        <p>Other outlets browse and search listings. If it's what they need, they reach out directly to you to organise the deal.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <h3>Sort it between yourselves</h3>
+        <p>You agree the details and deliver — that's it, done. No commission, no middleman.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Internal tool for buying-group member outlets only — not visible outside the group. · SwapYard mock-up
+</footer>
+
+<script>
+const listings = [
+  {title:"Class B engineering bricks — 400 units", cat:"Bricks & Block", county:"Cork", price:340, desc:"Sound, frost-resistant, damp-course grade. Some mortar residue, collection only.", outlet:"Outlet · Cork", grad:"linear-gradient(135deg,#8a5a44,#5c3a2b)", clearance:false},
+  {title:"Celotex GA4000 100mm — 22m² offcuts", cat:"Insulation", county:"Galway", price:95, desc:"Mixed sizes 600×600 up to 2400×1200. Full boards, unopened packs.", outlet:"Outlet · Galway", grad:"linear-gradient(135deg,#c9a24c,#8a6d24)", clearance:false},
+  {title:"C24 structural timber, 30 lengths", cat:"Timber & Sheet", county:"Limerick", price:210, desc:"Kiln-dried, grade-stamped 47×175mm. Surplus from a finished frame job.", outlet:"Outlet · Limerick", grad:"linear-gradient(135deg,#b98454,#7a5731)", clearance:false},
+  {title:"Discontinued 100mm dense blocks — 1,100 units", cat:"Bricks & Block", county:"Kildare", price:610, desc:"Manufacturer no longer produces this line. Brand new, banded, dry stored.", outlet:"Outlet · Kildare", grad:"linear-gradient(135deg,#7d8a8f,#4d5a5e)", clearance:true},
+  {title:"Cast-iron style radiators — 6 units", cat:"Heating & Plumbing", county:"Donegal", price:480, desc:"End-of-line stock, boxed, mixed sizes. Spec sheets available on request.", outlet:"Outlet · Donegal", grad:"linear-gradient(135deg,#3d5a6b,#22343e)", clearance:false},
+  {title:"Slate roof tiles — approx 6m² job lot", cat:"Roofing", county:"Mayo", price:150, desc:"Reclaimed from a re-roofing job. Sound, graded, ready to lay.", outlet:"Outlet · Mayo", grad:"linear-gradient(135deg,#5a5f66,#2c2f33)", clearance:false},
+  {title:"Sanitaryware — 4 basins, 2 WCs, end-of-line", cat:"Sanitaryware", county:"Cork", price:220, desc:"Discontinued colourway. Boxed, undamaged, showroom returns.", outlet:"Outlet · Cork", grad:"linear-gradient(135deg,#c7ccc6,#8f958e)", clearance:true},
+  {title:"Copper pipe offcuts, 15mm & 22mm — mixed", cat:"Heating & Plumbing", county:"Galway", price:60, desc:"Various lengths, clean stock, ideal for small jobs and repairs.", outlet:"Outlet · Galway", grad:"linear-gradient(135deg,#b5652f,#7a3f1c)", clearance:false},
+];
+
+const grid = document.getElementById('grid');
+const emptyState = document.getElementById('empty-state');
+const resultCount = document.getElementById('result-count');
+
+function render(data){
+  grid.innerHTML = "";
+  if(data.length === 0){
+    emptyState.style.display = "block";
+  } else {
+    emptyState.style.display = "none";
+  }
+  data.forEach(item=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="tag ${item.clearance ? 'clearance':''}">€${item.price.toLocaleString()}</div>
+      <div class="card-media" style="background:${item.grad}"><span>${item.cat}</span></div>
+      <div class="card-body">
+        <div class="card-cat">${item.clearance ? 'Clearance · ' : ''}${item.cat}</div>
+        <p class="card-title">${item.title}</p>
+        <p class="card-desc">${item.desc}</p>
+        <div class="card-foot">
+          <span class="stamp">${item.outlet}</span>
+          <a href="#" class="contact-link" onclick="return false;">Contact outlet →</a>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  resultCount.textContent = `Showing ${data.length} of ${listings.length} listings`;
+}
+
+function applyFilters(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const cat = document.getElementById('cat-filter').value;
+  const county = document.getElementById('county-filter').value;
+  const filtered = listings.filter(item=>{
+    const matchesQ = !q || item.title.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q);
+    const matchesCat = !cat || item.cat === cat;
+    const matchesCounty = !county || item.county === county;
+    return matchesQ && matchesCat && matchesCounty;
+  });
+  render(filtered);
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+document.getElementById('cat-filter').addEventListener('change', applyFilters);
+document.getElementById('county-filter').addEventListener('change', applyFilters);
+
+render(listings);
+
+/* --- Upload form mock behaviour --- */
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('file-input');
+const previewStrip = document.getElementById('preview-strip');
+
+dropzone.addEventListener('click', ()=> fileInput.click());
+dropzone.addEventListener('dragover', e=>{e.preventDefault(); dropzone.classList.add('drag');});
+dropzone.addEventListener('dragleave', ()=> dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e=>{
+  e.preventDefault();
+  dropzone.classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e=> handleFiles(e.target.files));
+
+function handleFiles(files){
+  previewStrip.innerHTML = "";
+  Array.from(files).slice(0,6).forEach((f,i)=>{
+    const thumb = document.createElement('div');
+    thumb.className = 'preview-thumb';
+    thumb.textContent = `IMG ${i+1}`;
+    previewStrip.appendChild(thumb);
+  });
+}
+
+document.getElementById('listing-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const desc = document.getElementById('desc').value;
+  const cat = document.getElementById('cat').value;
+  const county = document.getElementById('county').value;
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  const grads = ["linear-gradient(135deg,#8a5a44,#5c3a2b)","linear-gradient(135deg,#3d5a6b,#22343e)","linear-gradient(135deg,#c9a24c,#8a6d24)"];
+  listings.unshift({
+    title, desc, cat, county, price,
+    outlet: "Your Outlet · " + county,
+    grad: grads[Math.floor(Math.random()*grads.length)],
+    clearance: false
+  });
+  applyFilters();
+  this.reset();
+  previewStrip.innerHTML = "";
+  const toast = document.getElementById('toast');
+  toast.style.display = "inline-block";
+  setTimeout(()=> toast.style.display = "none", 3500);
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+
+</body>
+</html>
