@@ -200,6 +200,11 @@ form { display: flex; flex-direction: column; gap: 14px; }
   width: 130px; padding: 7px 8px; font-size: 13px; border: 1.5px solid var(--line);
   border-radius: var(--radius); font-family: 'Inter', sans-serif;
 }
+.request-box {
+  background: var(--paper-card); border: 1.5px dashed var(--amber-dark); border-radius: var(--radius);
+  padding: 24px; max-width: 560px;
+}
+.request-box-sub { color: var(--steel); font-size: 13.5px; margin: 0 0 16px; }
 
 /* Hero (public homepage) */
 .hero { background: var(--ink); color: var(--paper); padding: 64px 0 56px; border-bottom: 1px solid #2b3d4d; }

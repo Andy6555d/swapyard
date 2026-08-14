@@ -126,3 +126,45 @@ export async function deleteListing(formData: FormData) {
   revalidatePath('/');
   revalidatePath('/my-listings');
 }
+
+export async function createRequest(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/login');
+
+  const title = formData.get('title') as string;
+  const description = formData.get('description') as string;
+  const category = formData.get('category') as string;
+  const county = formData.get('county') as string;
+
+  const { error } = await supabase.from('requests').insert({
+    outlet_id: user.id,
+    title,
+    description,
+    category,
+    county,
+  });
+
+  if (error) {
+    redirect('/requests?error=' + encodeURIComponent(error.message));
+  }
+
+  revalidatePath('/requests');
+  redirect('/requests');
+}
+
+export async function markRequestFulfilled(formData: FormData) {
+  const supabase = await createClient();
+  const requestId = formData.get('requestId') as string;
+  await supabase.from('requests').update({ status: 'fulfilled' }).eq('id', requestId);
+  revalidatePath('/requests');
+}
+
+export async function deleteRequest(formData: FormData) {
+  const supabase = await createClient();
+  const requestId = formData.get('requestId') as string;
+  await supabase.from('requests').delete().eq('id', requestId);
+  revalidatePath('/requests');
+}
