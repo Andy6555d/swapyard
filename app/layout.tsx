@@ -57,6 +57,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <a href="/list">List Stock</a>
                   <a href="/requests">Requests</a>
                   <a href="/my-listings">My Listings</a>
+                  <a href="/subscribe">Billing</a>
                   {isAdmin && <a href="/admin">Admin</a>}
                 </nav>
                 <div className="header-actions">

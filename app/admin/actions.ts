@@ -79,3 +79,23 @@ export async function adminDeleteListing(formData: FormData) {
   revalidatePath('/admin');
   revalidatePath('/');
 }
+
+export async function adminGrantAccess(formData: FormData) {
+  await requireAdmin();
+  const outletId = formData.get('outletId') as string;
+
+  const admin = createAdminClient();
+  await admin.from('profiles').update({ subscription_status: 'comp' }).eq('id', outletId);
+
+  revalidatePath('/admin');
+}
+
+export async function adminRevokeAccess(formData: FormData) {
+  await requireAdmin();
+  const outletId = formData.get('outletId') as string;
+
+  const admin = createAdminClient();
+  await admin.from('profiles').update({ subscription_status: 'inactive' }).eq('id', outletId);
+
+  revalidatePath('/admin');
+}

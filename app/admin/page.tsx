@@ -5,6 +5,8 @@ import {
   adminSendResetEmail,
   adminDeleteOutlet,
   adminDeleteListing,
+  adminGrantAccess,
+  adminRevokeAccess,
 } from './actions';
 
 export const dynamic = 'force-dynamic';
@@ -56,6 +58,7 @@ export default async function AdminPage({
               <th>County</th>
               <th>Email</th>
               <th>Phone</th>
+              <th>Billing</th>
               <th>Password</th>
               <th></th>
             </tr>
@@ -70,6 +73,27 @@ export default async function AdminPage({
                 <td>{o.county}</td>
                 <td>{o.contact_email}</td>
                 <td>{o.contact_phone || '—'}</td>
+                <td>
+                  <span className={`billing-badge billing-${o.subscription_status || 'inactive'}`}>
+                    {o.is_admin ? 'admin' : o.subscription_status || 'inactive'}
+                  </span>
+                  {!o.is_admin && (
+                    <div className="admin-inline-form" style={{ marginTop: '6px' }}>
+                      {o.subscription_status !== 'active' && o.subscription_status !== 'comp' && (
+                        <form action={adminGrantAccess}>
+                          <input type="hidden" name="outletId" value={o.id} />
+                          <button type="submit" className="btn btn-ghost btn-sm">Grant free access</button>
+                        </form>
+                      )}
+                      {o.subscription_status === 'comp' && (
+                        <form action={adminRevokeAccess}>
+                          <input type="hidden" name="outletId" value={o.id} />
+                          <button type="submit" className="btn btn-ghost btn-sm">Revoke</button>
+                        </form>
+                      )}
+                    </div>
+                  )}
+                </td>
                 <td>
                   <form action={adminSetPassword} className="admin-inline-form">
                     <input type="hidden" name="outletId" value={o.id} />
