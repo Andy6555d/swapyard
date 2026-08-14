@@ -40,6 +40,15 @@ export default async function SignupPage({
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" minLength={6} required />
           </div>
+          <div className="field checkbox-field">
+            <label className="checkbox-label">
+              <input type="checkbox" name="agreeTerms" value="yes" required />
+              <span>
+                I agree to the <a href="/terms" target="_blank">Terms of Service</a> and{' '}
+                <a href="/privacy" target="_blank">Privacy Policy</a>
+              </span>
+            </label>
+          </div>
           <button type="submit" className="btn btn-primary btn-full">
             Create Account
           </button>
