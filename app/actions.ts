@@ -27,22 +27,20 @@ export async function signup(formData: FormData) {
   const county = formData.get('county') as string;
   const contactPhone = formData.get('contactPhone') as string;
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
-
-  if (error || !data.user) {
-    redirect('/signup?error=' + encodeURIComponent(error?.message || 'Signup failed'));
-  }
-
-  const { error: profileError } = await supabase.from('profiles').insert({
-    id: data.user!.id,
-    outlet_name: outletName,
-    county,
-    contact_email: email,
-    contact_phone: contactPhone || null,
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        outlet_name: outletName,
+        county,
+        contact_phone: contactPhone || null,
+      },
+    },
   });
 
-  if (profileError) {
-    redirect('/signup?error=' + encodeURIComponent(profileError.message));
+  if (error) {
+    redirect('/signup?error=' + encodeURIComponent(error.message));
   }
 
   revalidatePath('/', 'layout');
