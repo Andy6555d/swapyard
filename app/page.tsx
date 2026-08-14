@@ -71,7 +71,7 @@ export default async function HomePage() {
       </section>
 
       <footer style={{ marginTop: '20px' }}>
-        Internal tool for buying-group member outlets only — not visible outside the group.
+        Tool for United Hardware member outlets only
       </footer>
     </>
   );
