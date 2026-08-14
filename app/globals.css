@@ -229,6 +229,15 @@ form { display: flex; flex-direction: column; gap: 14px; }
 .billing-inactive, .billing-canceled { background: #EDEEE9; color: var(--steel); }
 .billing-past_due { background: #FBEAE7; color: var(--brick); }
 
+.checkbox-field { margin-bottom: 4px; }
+.checkbox-label {
+  display: flex; align-items: flex-start; gap: 9px; cursor: pointer;
+  font-size: 13px; color: var(--steel); font-weight: 400; text-transform: none; letter-spacing: normal;
+}
+.checkbox-label input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
+.checkbox-label a { color: var(--brick); font-weight: 600; text-decoration: none; }
+.checkbox-label a:hover { text-decoration: underline; }
+
 /* Footer */
 .site-footer { background: var(--ink); color: #B9C2C8; margin-top: 60px; border-top: 3px solid var(--amber); }
 .footer-inner {
