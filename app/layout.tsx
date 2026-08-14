@@ -14,13 +14,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   } = await supabase.auth.getUser();
 
   let outletName: string | null = null;
+  let isAdmin = false;
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('outlet_name')
+      .select('outlet_name, is_admin')
       .eq('id', user.id)
       .single();
     outletName = profile?.outlet_name ?? null;
+    isAdmin = profile?.is_admin ?? false;
   }
 
   return (
@@ -44,6 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <a href="/">Browse Stock</a>
                   <a href="/list">List Stock</a>
                   <a href="/my-listings">My Listings</a>
+                  {isAdmin && <a href="/admin">Admin</a>}
                 </nav>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                   {outletName && <span className="nav-outlet">{outletName}</span>}

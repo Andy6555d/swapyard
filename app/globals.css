@@ -171,6 +171,36 @@ form { display: flex; flex-direction: column; gap: 14px; }
 
 .empty { text-align: center; padding: 50px 20px; border: 1.5px dashed var(--line); font-family: 'IBM Plex Mono', monospace; color: var(--steel); border-radius: var(--radius); }
 
+.success-box {
+  background: #E4F3E6; border: 1px solid #B7DDBC; color: #2E6B3E;
+  padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px;
+}
+.admin-section-title { font-family: 'Archivo Black', sans-serif; font-size: 18px; margin: 8px 0 14px; }
+.admin-table-wrap {
+  background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow-x: auto;
+}
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.admin-table th {
+  text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--steel);
+  text-transform: uppercase; letter-spacing: 0.06em; padding: 12px 14px; border-bottom: 2px solid var(--ink);
+  white-space: nowrap;
+}
+.admin-table td {
+  padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top;
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-badge {
+  display: inline-block; margin-left: 8px; background: var(--amber); color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 100px;
+}
+.admin-inline-form { display: flex; gap: 6px; align-items: center; }
+.admin-mini-input {
+  width: 130px; padding: 7px 8px; font-size: 13px; border: 1.5px solid var(--line);
+  border-radius: var(--radius); font-family: 'Inter', sans-serif;
+}
+
 @media (max-width: 700px) {
   .field-row { grid-template-columns: 1fr; }
   nav { gap: 14px; }
