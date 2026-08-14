@@ -7,6 +7,11 @@ export const metadata = {
   description: 'Internal marketplace for independent merchant outlets',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const {
@@ -42,6 +47,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </a>
             {user && (
               <>
+                <input type="checkbox" id="nav-toggle" className="nav-toggle-checkbox" />
+                <label htmlFor="nav-toggle" className="nav-toggle-label" aria-label="Menu">
+                  ☰
+                </label>
                 <nav>
                   <a href="/browse">Browse Stock</a>
                   <a href="/list">List Stock</a>
@@ -49,7 +58,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <a href="/my-listings">My Listings</a>
                   {isAdmin && <a href="/admin">Admin</a>}
                 </nav>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div className="header-actions">
                   {outletName && <span className="nav-outlet">{outletName}</span>}
                   <form action={logout}>
                     <button className="logout-btn" type="submit">

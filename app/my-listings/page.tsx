@@ -40,7 +40,7 @@ export default async function MyListingsPage() {
               </div>
               <div className="card-media">
                 {item.image_urls?.[0] ? (
-                  <img src={item.image_urls[0]} alt={item.title} />
+                  <img src={item.image_urls[0]} alt={item.title} loading="lazy" />
                 ) : (
                   <span className="placeholder">{item.category}</span>
                 )}

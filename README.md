@@ -1,50 +1,87 @@
-# SwapYard — Setup Guide
+# SwapYard — Setup & Reference Guide
 
-Everything below is done through web dashboards — no terminal needed.
+An internal noticeboard for independent merchant outlets to move aged/surplus
+stock to each other, and to post requests for stock they're looking for.
+No commission, no payment processing — outlets contact each other directly
+and arrange the deal and delivery themselves.
 
-## 1. Create the database (Supabase)
+Live at: **swapyard.ie** (hosted on Vercel, database on Supabase)
 
-1. Go to supabase.com, sign up free, click "New Project".
-2. Give it a name (e.g. swapyard), set a database password (save it somewhere), pick a region close to Ireland (e.g. West EU), click "Create new project". Takes about 2 minutes to spin up.
-3. In the left sidebar, click **SQL Editor** → **New query**.
-4. Open the file `supabase-schema.sql` from this project, copy its entire contents, paste into the query box, and click **Run**. This creates the two tables (profiles, listings) and all the security rules.
-5. In the left sidebar, click **Storage** → **New bucket**. Name it exactly `listing-images`, toggle **Public bucket** ON, click **Create bucket**.
-6. In the left sidebar, click **Project Settings** → **API**. You'll need two values from this page in step 3 below:
-   - **Project URL**
-   - **anon public** key
+---
 
-## 2. Upload the code to GitHub
+## What's built
 
-1. Go to github.com, log in, click the **+** icon top right → **New repository**. Name it `swapyard`, leave it Private or Public, click **Create repository** (don't add a README — we already have one).
-2. On the new empty repo page, click **uploading an existing file**.
-3. Drag the **entire unzipped `swapyard-app` folder contents** (all files and subfolders — `app`, `lib`, `package.json`, everything) into the upload box. GitHub preserves the folder structure automatically.
-4. Click **Commit changes**.
+- **Public homepage** (`/`) — marketing page, no login required. Shows live
+  stats (active listings, outlets, counties), the €200/year fee, and a
+  "How it Works" section.
+- **Individual outlet logins** — self-registration with outlet name, county,
+  and contact details.
+- **Browse Stock** (`/browse`) — all active listings, filterable by category
+  (grouped by your real product taxonomy — Main Group → Subgroup), county,
+  and free-text search.
+- **List Stock** (`/list`) — post surplus/aged stock with photos, quantity,
+  description, and asking price.
+- **My Listings** (`/my-listings`) — each outlet manages only their own
+  listings: mark as sold, relist, or delete.
+- **Requests** (`/requests`) — "ask if anyone has it" board. Post what
+  you're looking for; other outlets can reach out if they have it.
+- **Admin dashboard** (`/admin`, visible only to admin accounts) — set or
+  reset any outlet's password, send password-reset emails, remove outlets,
+  or moderate/delete any listing.
 
-## 3. Deploy on Vercel
+## What's NOT included (by design)
 
-1. Go to vercel.com, sign up using **Continue with GitHub**.
-2. Click **Add New** → **Project**, find your `swapyard` repo, click **Import**.
-3. Before clicking Deploy, open **Environment Variables** and add two:
-   - `NEXT_PUBLIC_SUPABASE_URL` → paste the Project URL from Supabase step 1.6
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → paste the anon public key from Supabase step 1.6
-4. Click **Deploy**. Wait about a minute.
-5. You'll get a live link like `swapyard.vercel.app` — that's what you share with outlets.
+- No payment processing — outlets arrange payment and delivery themselves.
+- No paywall/billing yet — the €200/year fee is a business decision, not
+  yet enforced in the app. Add later once ready.
 
-## Making changes later
+---
 
-Any time you want something changed, I can hand you updated files. Just upload the changed file(s) into the same GitHub repo (same drag-and-drop upload method, GitHub will ask if you want to replace the existing file — say yes), and Vercel redeploys automatically within a minute.
+## One-time setup (already done, kept here for reference)
 
-## What's included
+All of this is done through web dashboards — no terminal needed.
 
-- Individual login per outlet (email + password, set at signup)
-- Self-registration with outlet name, county, and contact details
-- Browse all active listings, filterable by category, county, and search
-- List stock with photos, description, quantity, and price
-- "My Listings" — each outlet sees and manages only their own listings (mark as sold, relist, delete)
-- Contact happens by email (outlets reach out directly — no in-app messaging, no payments)
+### 1. Database (Supabase)
+Run, in this order, in Supabase → SQL Editor:
+1. `supabase-schema.sql` — core tables (profiles, listings) + storage bucket
+2. `supabase-schema-trigger-fix.sql` — auto-creates a profile row on signup
+3. `supabase-schema-admin-update.sql` — adds the `is_admin` flag
+4. `supabase-schema-requests.sql` — adds the requests table
 
-## What's NOT included (by design, for now)
+Storage: a public bucket named `listing-images` (Storage → New bucket).
 
-- No payment processing — this is a noticeboard, not a marketplace; outlets arrange payment/delivery themselves
-- No annual fee / paywall — deliberately left out per your request; can be added later once you're ready
-- No admin panel — if you need to remove a listing or account manually, that's done directly in the Supabase dashboard (Table Editor) for now
+### 2. Code (GitHub → Vercel)
+Code lives in a GitHub repo, connected to Vercel for automatic deploys.
+Every time a file is uploaded/replaced in GitHub and committed, Vercel
+rebuilds and redeploys automatically within about a minute.
+
+### 3. Environment variables (set in Vercel → Settings → Environment Variables)
+- `NEXT_PUBLIC_SUPABASE_URL` — from Supabase → Settings → API
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — the Publishable/anon key, same page
+- `SUPABASE_SERVICE_ROLE_KEY` — the **Secret** key, same page. Never
+  prefix this with `NEXT_PUBLIC_` — it must stay server-side only, since
+  it has full admin access to the database.
+
+### 4. Domain
+`swapyard.ie` is connected via DNS records (A + CNAME) at the registrar
+(register365), pointing at Vercel. Managed in Vercel → Settings → Domains.
+
+### 5. Making yourself admin
+Sign up for a normal account, then in Supabase SQL Editor:
+```sql
+update profiles set is_admin = true where contact_email = 'your-email@example.com';
+```
+
+---
+
+## Making changes going forward
+
+Any time you want something changed, ask and you'll get updated files back.
+Upload the changed file(s) into the same GitHub repo (same path, GitHub
+offers to replace it), commit, and Vercel redeploys automatically.
+
+## Security note
+
+Kept up to date with Next.js security patches as they're flagged during
+builds — worth keeping an eye on Vercel's build logs for any new warnings
+about `next` or `@supabase/*` package versions.
