@@ -8,11 +8,6 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { count: activeCount } = await supabase
-    .from('listings')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'active');
-
   const { data: outletRows } = await supabase.from('profiles').select('county');
   const outletCount = outletRows?.length ?? 0;
   const countyCount = new Set((outletRows ?? []).map((o) => o.county)).size;
@@ -40,7 +35,6 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="ticker">
-            <div className="ticker-row"><span className="k">Active listings</span><span className="v">{activeCount ?? 0}</span></div>
             <div className="ticker-row"><span className="k">Outlets registered</span><span className="v">{outletCount}</span></div>
             <div className="ticker-row"><span className="k">Counties covered</span><span className="v">{countyCount}</span></div>
             <div className="ticker-row"><span className="k">Platform fee</span><span className="v">€200.00 / year</span></div>
