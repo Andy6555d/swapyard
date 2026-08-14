@@ -3,6 +3,8 @@ import { createRequest, markRequestFulfilled, deleteRequest } from '../actions';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export default async function RequestsPage({
   searchParams,
 }: {

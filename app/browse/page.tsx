@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import BrowseGrid from './BrowseGrid';
 
+export const dynamic = 'force-dynamic';
+
 export default async function BrowsePage() {
   const supabase = await createClient();
 

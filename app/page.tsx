@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const supabase = await createClient();
   const {
@@ -49,7 +51,6 @@ export default async function HomePage() {
       <section className="wrap">
         <div className="page-head" style={{ marginTop: '44px' }}>
           <h1>How it Works</h1>
-          <span className="sub">THREE STEPS</span>
         </div>
         <div className="how-grid">
           <div className="how-step">
