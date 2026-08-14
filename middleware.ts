@@ -28,7 +28,14 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isPublicPath = path === '/' || path.startsWith('/login') || path.startsWith('/signup') || path.startsWith('/privacy') || path.startsWith('/terms');
+  const isApiRoute = path.startsWith('/api/');
+  const isPublicPath =
+    isApiRoute ||
+    path === '/' ||
+    path.startsWith('/login') ||
+    path.startsWith('/signup') ||
+    path.startsWith('/privacy') ||
+    path.startsWith('/terms');
 
   if (!user && !isPublicPath) {
     const url = request.nextUrl.clone();
@@ -40,6 +47,25 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/browse';
     return NextResponse.redirect(url);
+  }
+
+  // Paywall gate: logged-in, non-admin outlets need an active subscription
+  // (or comp access) to use the app beyond the billing page itself.
+  if (user && !isApiRoute && !isPublicPath && path !== '/subscribe') {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_admin, subscription_status')
+      .eq('id', user.id)
+      .single();
+
+    const hasAccess =
+      profile?.is_admin || profile?.subscription_status === 'active' || profile?.subscription_status === 'comp';
+
+    if (!hasAccess) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/subscribe';
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;
