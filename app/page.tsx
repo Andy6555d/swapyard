@@ -23,7 +23,7 @@ export default async function HomePage() {
             <div className="eyebrow">Independent merchants only · No fees on trades · No middleman</div>
             <h1>Move your aged stock<br />to a merchant who needs it.</h1>
             <p className="lede">
-              SwapYard is the group&apos;s internal noticeboard for surplus and end-of-line stock.
+              SwapYard is a noticeboard for independent merchants to move surplus and end-of-line stock.
               List it, a nearby merchant buys it, you deliver it — no commission, no public listing.
             </p>
             <div className="hero-ctas">
