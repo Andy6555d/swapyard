@@ -221,6 +221,43 @@ form { display: flex; flex-direction: column; gap: 14px; }
 }
 .request-box-sub { color: var(--steel); font-size: 13.5px; margin: 0 0 16px; }
 
+/* Footer */
+.site-footer { background: var(--ink); color: #B9C2C8; margin-top: 60px; border-top: 3px solid var(--amber); }
+.footer-inner {
+  display: grid; grid-template-columns: 1.4fr 2fr; gap: 40px;
+  padding: 44px 0 32px;
+}
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Archivo Black', sans-serif; font-size: 18px; color: var(--paper); margin-bottom: 10px;
+}
+.footer-tagline { font-size: 13px; color: #8CA0AC; max-width: 320px; margin: 0; line-height: 1.5; }
+.footer-links { display: flex; gap: 40px; flex-wrap: wrap; }
+.footer-col { display: flex; flex-direction: column; gap: 8px; }
+.footer-col-title {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--amber); margin-bottom: 4px;
+}
+.footer-col a { font-size: 13.5px; color: #B9C2C8; text-decoration: none; }
+.footer-col a:hover { color: var(--paper); text-decoration: underline; }
+.footer-bottom {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  padding: 16px 0; border-top: 1px solid #2b3d4d;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #6C808C;
+}
+
+/* Legal pages */
+.legal-page { max-width: 760px; }
+.legal-page h1 { font-family: 'Archivo Black', sans-serif; font-size: 30px; margin: 0 0 6px; }
+.legal-page .legal-updated { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--steel); margin: 0 0 32px; }
+.legal-page h2 { font-size: 18px; margin: 32px 0 10px; }
+.legal-page p, .legal-page li { font-size: 14.5px; color: var(--ink); line-height: 1.7; }
+.legal-page ul { padding-left: 20px; margin: 8px 0; }
+.legal-page .legal-note {
+  background: var(--paper-card); border: 1.5px dashed var(--steel-light); border-radius: var(--radius);
+  padding: 16px 18px; font-size: 13px; color: var(--steel); margin: 28px 0;
+}
+
 /* Hero (public homepage) */
 .hero { background: var(--ink); color: var(--paper); padding: 64px 0 56px; border-bottom: 1px solid #2b3d4d; }
 .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: end; }
@@ -249,4 +286,7 @@ form { display: flex; flex-direction: column; gap: 14px; }
   .hero h1 { font-size: 32px; }
   .how-grid { grid-template-columns: 1fr; }
   .filter-row select { flex: 1 1 140px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+  .footer-links { gap: 28px; }
+  .footer-bottom { flex-direction: column; }
 }

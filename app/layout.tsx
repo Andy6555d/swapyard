@@ -1,6 +1,7 @@
 import './globals.css';
 import { createClient } from '@/lib/supabase/server';
 import { logout } from './actions';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'SwapYard — Merchant Stock Exchange',
@@ -71,6 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
         </header>
         {children}
+        <Footer />
       </body>
     </html>
   );
