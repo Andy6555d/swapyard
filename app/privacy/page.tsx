@@ -68,13 +68,6 @@ export default function PrivacyPage() {
           For any privacy questions or requests, contact us at{' '}
           <a href="mailto:hello@swapyard.ie">hello@swapyard.ie</a>.
         </p>
-
-        <div className="legal-note">
-          This policy is written in plain language to reflect what SwapYard actually does. It
-          isn&apos;t a substitute for formal legal advice — if SwapYard grows beyond its current
-          private, invite-based use, it&apos;s worth having a solicitor review this before wider
-          rollout.
-        </div>
       </div>
     </div>
   );
