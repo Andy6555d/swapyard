@@ -222,7 +222,7 @@ form { display: flex; flex-direction: column; gap: 14px; }
 .ticker-row .v { color: var(--amber); font-size: 16px; font-weight: 600; }
 
 /* How it works */
-.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+.how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px; }
 .how-step { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 20px 24px; }
 .how-num { font-family: 'Archivo Black', sans-serif; font-size: 34px; color: var(--amber-dark); line-height: 1; margin-bottom: 10px; }
 .how-step h3 { font-size: 16px; margin: 0 0 8px; }

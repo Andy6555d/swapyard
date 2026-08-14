@@ -67,6 +67,11 @@ export default async function HomePage() {
             <h3>Sort it between yourselves</h3>
             <p>You agree the details and deliver — that&apos;s it, done. No commission, no middleman.</p>
           </div>
+          <div className="how-step">
+            <div className="how-num">04</div>
+            <h3>Can&apos;t find it? Ask</h3>
+            <p>Post a request for what you&apos;re looking for — outlets that have it can reach out directly to you instead.</p>
+          </div>
         </div>
       </section>
     </>
