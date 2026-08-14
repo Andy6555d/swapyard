@@ -1,13 +1,13 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import {
-
-export const dynamic = 'force-dynamic';
   adminSetPassword,
   adminSendResetEmail,
   adminDeleteOutlet,
   adminDeleteListing,
 } from './actions';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminPage({
   searchParams,
