@@ -92,12 +92,6 @@ export default function TermsPage() {
           Questions about these terms? Contact us at{' '}
           <a href="mailto:hello@swapyard.ie">hello@swapyard.ie</a>.
         </p>
-
-        <div className="legal-note">
-          These terms are written to reflect how SwapYard currently operates as a private,
-          invite-based tool. As with the Privacy Policy, a solicitor review is worth doing before
-          any wider public rollout or before charging fees.
-        </div>
       </div>
     </div>
   );
