@@ -18,6 +18,7 @@ export async function createCheckoutSession() {
     line_items: [{ price: process.env.STRIPE_PRICE_ID!, quantity: 1 }],
     client_reference_id: user.id,
     customer_email: user.email ?? undefined,
+    allow_promotion_codes: true,
     success_url: `${SITE_URL}/subscribe?success=true`,
     cancel_url: `${SITE_URL}/subscribe`,
   });
