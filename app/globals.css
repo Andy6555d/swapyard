@@ -208,6 +208,8 @@ form { display: flex; flex-direction: column; gap: 14px; }
 .hero h1 { font-family: 'Archivo Black', sans-serif; font-size: 44px; line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.01em; }
 .hero p.lede { font-size: 16px; color: #B9C2C8; max-width: 480px; margin: 0 0 28px; }
 .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero .btn-ghost { color: var(--paper); border-color: #3d5062; }
+.hero .btn-ghost:hover { border-color: var(--paper); }
 .ticker { font-family: 'IBM Plex Mono', monospace; border: 1px solid #2b3d4d; background: #16222D; }
 .ticker-row { display: flex; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #2b3d4d; }
 .ticker-row:last-child { border-bottom: none; }
