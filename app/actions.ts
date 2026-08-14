@@ -26,6 +26,11 @@ export async function signup(formData: FormData) {
   const outletName = formData.get('outletName') as string;
   const county = formData.get('county') as string;
   const contactPhone = formData.get('contactPhone') as string;
+  const agreeTerms = formData.get('agreeTerms');
+
+  if (agreeTerms !== 'yes') {
+    redirect('/signup?error=' + encodeURIComponent('You must agree to the Terms of Service and Privacy Policy to register.'));
+  }
 
   const { error } = await supabase.auth.signUp({
     email,
