@@ -8,9 +8,9 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: outletRows } = await supabase.from('profiles').select('county');
-  const outletCount = outletRows?.length ?? 0;
-  const countyCount = new Set((outletRows ?? []).map((o) => o.county)).size;
+  const { data: stats } = await supabase.rpc('get_public_stats').single();
+  const outletCount = (stats as any)?.outlet_count ?? 0;
+  const countyCount = (stats as any)?.county_count ?? 0;
 
   let activeCount: number | null = null;
   if (user) {
