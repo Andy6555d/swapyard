@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { CATEGORIES, COUNTIES } from '@/lib/constants';
+import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 
 type Listing = {
   id: string;
@@ -46,7 +46,14 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
           />
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="">All categories</option>
-            {CATEGORIES.map((c) => (
+            {CATEGORY_GROUPS.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.items.map((item) => (
+                  <option key={item} value={item}>{item}</option>
+                ))}
+              </optgroup>
+            ))}
+            {UNGROUPED_CATEGORIES.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>

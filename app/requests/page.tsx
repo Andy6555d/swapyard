@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { createRequest, markRequestFulfilled, deleteRequest } from '../actions';
-import { CATEGORIES, COUNTIES } from '@/lib/constants';
+import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 
 export default async function RequestsPage({
@@ -55,7 +55,14 @@ export default async function RequestsPage({
               <label htmlFor="category">Category</label>
               <select id="category" name="category" required defaultValue="">
                 <option value="" disabled>Select category</option>
-                {CATEGORIES.map((c) => (
+                {CATEGORY_GROUPS.map((g) => (
+                  <optgroup key={g.group} label={g.group}>
+                    {g.items.map((item) => (
+                      <option key={item} value={item}>{item}</option>
+                    ))}
+                  </optgroup>
+                ))}
+                {UNGROUPED_CATEGORIES.map((c) => (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
