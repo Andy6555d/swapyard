@@ -27,8 +27,8 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const publicPaths = ['/login', '/signup'];
-  const isPublicPath = publicPaths.some((path) => request.nextUrl.pathname.startsWith(path));
+  const path = request.nextUrl.pathname;
+  const isPublicPath = path === '/' || path.startsWith('/login') || path.startsWith('/signup');
 
   if (!user && !isPublicPath) {
     const url = request.nextUrl.clone();
@@ -36,9 +36,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && isPublicPath) {
+  if (user && (path.startsWith('/login') || path.startsWith('/signup'))) {
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+    url.pathname = '/browse';
     return NextResponse.redirect(url);
   }
 
