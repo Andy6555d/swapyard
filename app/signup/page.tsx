@@ -1,0 +1,53 @@
+import { signup } from '../actions';
+import { COUNTIES } from '@/lib/constants';
+
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const params = await searchParams;
+
+  return (
+    <div className="wrap">
+      <div className="auth-shell">
+        <h1>Register your outlet</h1>
+        <p className="sub">Members-only — one account per outlet.</p>
+        {params.error && <div className="error-box">{params.error}</div>}
+        <form action={signup}>
+          <div className="field">
+            <label htmlFor="outletName">Outlet name</label>
+            <input type="text" id="outletName" name="outletName" placeholder="e.g. Murphy's Builders Merchants" required />
+          </div>
+          <div className="field">
+            <label htmlFor="county">County</label>
+            <select id="county" name="county" required defaultValue="">
+              <option value="" disabled>Select county</option>
+              {COUNTIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="contactPhone">Contact phone (optional)</label>
+            <input type="text" id="contactPhone" name="contactPhone" placeholder="01 234 5678" />
+          </div>
+          <div className="field">
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" minLength={6} required />
+          </div>
+          <button type="submit" className="btn btn-primary btn-full">
+            Create Account
+          </button>
+        </form>
+        <div className="auth-switch">
+          Already registered? <a href="/login">Log in</a>
+        </div>
+      </div>
+    </div>
+  );
+}
