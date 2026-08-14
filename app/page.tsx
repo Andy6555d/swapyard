@@ -20,11 +20,11 @@ export default async function HomePage() {
       <section className="hero">
         <div className="wrap hero-grid">
           <div>
-            <div className="eyebrow">Members-only · No fees on trades · No middleman</div>
-            <h1>Move your aged stock<br />to a member who needs it.</h1>
+            <div className="eyebrow">Independent merchants only · No fees on trades · No middleman</div>
+            <h1>Move your aged stock<br />to a merchant who needs it.</h1>
             <p className="lede">
               SwapYard is the group&apos;s internal noticeboard for surplus and end-of-line stock.
-              List it, a nearby member outlet buys it, you deliver it — no commission, no public listing.
+              List it, a nearby merchant buys it, you deliver it — no commission, no public listing.
             </p>
             <div className="hero-ctas">
               {user ? (
@@ -69,10 +69,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <footer style={{ marginTop: '20px' }}>
-        Tool for United Hardware member outlets only
-      </footer>
     </>
   );
 }

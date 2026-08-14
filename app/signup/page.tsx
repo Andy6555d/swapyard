@@ -12,7 +12,7 @@ export default async function SignupPage({
     <div className="wrap">
       <div className="auth-shell">
         <h1>Register your outlet</h1>
-        <p className="sub">Members-only — one account per outlet.</p>
+        <p className="sub">Independent merchants only — one account per outlet.</p>
         {params.error && <div className="error-box">{params.error}</div>}
         <form action={signup}>
           <div className="field">

@@ -3,8 +3,8 @@ import { createClient } from '@/lib/supabase/server';
 import { logout } from './actions';
 
 export const metadata = {
-  title: 'SwapYard — Member Stock Exchange',
-  description: 'Internal marketplace for buying group member outlets',
+  title: 'SwapYard — Merchant Stock Exchange',
+  description: 'Internal marketplace for independent merchant outlets',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
