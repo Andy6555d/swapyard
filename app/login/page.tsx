@@ -1,4 +1,5 @@
 import { login } from '../actions';
+import SubmitButton from '@/components/SubmitButton';
 
 export default async function LoginPage({
   searchParams,
@@ -22,9 +23,7 @@ export default async function LoginPage({
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" required />
           </div>
-          <button type="submit" className="btn btn-primary btn-full">
-            Log In
-          </button>
+          <SubmitButton pendingText="Logging in…">Log In</SubmitButton>
         </form>
         <div className="auth-switch">
           New outlet? <a href="/signup">Register here</a>

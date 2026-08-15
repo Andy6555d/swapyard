@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createRequest, markRequestFulfilled, deleteRequest } from '../actions';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import { redirect } from 'next/navigation';
+import SubmitButton from '@/components/SubmitButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -79,7 +80,7 @@ export default async function RequestsPage({
               </select>
             </div>
           </div>
-          <button type="submit" className="btn btn-primary">Post Request</button>
+          <SubmitButton pendingText="Posting…" className="btn btn-primary">Post Request</SubmitButton>
         </form>
       </div>
 

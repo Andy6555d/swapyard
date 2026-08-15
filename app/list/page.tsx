@@ -1,6 +1,7 @@
 import { createListing } from '../actions';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
+import SubmitButton from '@/components/SubmitButton';
 
 export default async function ListStockPage({
   searchParams,
@@ -85,9 +86,7 @@ export default async function ListStockPage({
               <input type="file" id="images" name="images" accept="image/*" multiple />
             </div>
           </div>
-          <button type="submit" className="btn btn-primary btn-full">
-            Publish Listing
-          </button>
+          <SubmitButton pendingText="Publishing…">Publish Listing</SubmitButton>
         </form>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { signup } from '../actions';
 import { COUNTIES } from '@/lib/constants';
+import SubmitButton from '@/components/SubmitButton';
 
 export default async function SignupPage({
   searchParams,
@@ -49,9 +50,7 @@ export default async function SignupPage({
               </span>
             </label>
           </div>
-          <button type="submit" className="btn btn-primary btn-full">
-            Create Account
-          </button>
+          <SubmitButton pendingText="Creating account…">Create Account</SubmitButton>
         </form>
         <div className="auth-switch">
           Already registered? <a href="/login">Log in</a>
