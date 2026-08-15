@@ -72,20 +72,12 @@ export async function createListing(formData: FormData) {
   const county = formData.get('county') as string;
   const quantity = formData.get('quantity') as string;
   const price = parseFloat(formData.get('price') as string);
-  const files = formData.getAll('images') as File[];
 
-  const imageUrls: string[] = [];
-  for (const file of files) {
-    if (!file || file.size === 0) continue;
-    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
-    const fileName = `${user.id}/${Date.now()}-${safeName}`;
-    const { error: uploadError } = await supabase.storage
-      .from('listing-images')
-      .upload(fileName, file);
-    if (!uploadError) {
-      const { data: urlData } = supabase.storage.from('listing-images').getPublicUrl(fileName);
-      imageUrls.push(urlData.publicUrl);
-    }
+  let imageUrls: string[] = [];
+  try {
+    imageUrls = JSON.parse((formData.get('imageUrls') as string) || '[]');
+  } catch {
+    imageUrls = [];
   }
 
   const { error } = await supabase.from('listings').insert({

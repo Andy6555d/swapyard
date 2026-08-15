@@ -139,6 +139,8 @@ form { display: flex; flex-direction: column; gap: 14px; }
   padding: 18px; text-align: center; background: var(--paper); font-size: 13px; color: var(--steel);
 }
 .file-field input { margin-top: 8px; }
+.upload-status { margin: 8px 0 0; font-size: 12.5px; color: var(--steel); font-family: 'IBM Plex Mono', monospace; }
+.upload-error { margin: 8px 0 0; font-size: 12.5px; color: var(--brick); font-weight: 600; }
 
 /* Filter bar */
 .filterbar { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
