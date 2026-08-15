@@ -75,23 +75,37 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
               <div className={`tag ${item.status === 'sold' ? 'sold' : ''}`}>
                 {item.status === 'sold' ? 'SOLD' : `€${Number(item.price).toLocaleString()}`}
               </div>
-              <div className="card-media">
-                {item.image_urls?.[0] ? (
-                  <img src={item.image_urls[0]} alt={item.title} loading="lazy" />
-                ) : (
-                  <span className="placeholder">{item.category}</span>
-                )}
-              </div>
-              <div className="card-body">
-                <div className="card-cat">{item.category}</div>
-                <p className="card-title">{item.title}</p>
-                <p className="card-desc">{item.description}</p>
-                {item.quantity && <p className="card-meta">Quantity: {item.quantity}</p>}
+              <a href={`/listings/${item.id}`} className="card-link-area">
+                <div className="card-media">
+                  {item.image_urls?.[0] ? (
+                    <img src={item.image_urls[0]} alt={item.title} loading="lazy" />
+                  ) : (
+                    <span className="placeholder">{item.category}</span>
+                  )}
+                  {item.image_urls?.length > 1 && (
+                    <span className="photo-count">+{item.image_urls.length - 1} more</span>
+                  )}
+                </div>
+                <div className="card-body">
+                  <div className="card-cat">{item.category}</div>
+                  <p className="card-title">{item.title}</p>
+                  <p className="card-desc">{item.description}</p>
+                  {item.quantity && <p className="card-meta">Quantity: {item.quantity}</p>}
+                </div>
+              </a>
+              <div className="card-body" style={{ paddingTop: 0 }}>
                 <div className="card-foot">
                   <span className="stamp">{item.outlet_name} · {item.county}</span>
-                  <a className="contact-link" href={`mailto:${item.contact_email}`}>
-                    Contact outlet →
-                  </a>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <a className="contact-link" href={`mailto:${item.contact_email}`}>
+                      Email →
+                    </a>
+                    {item.contact_phone && (
+                      <a className="contact-link" href={`tel:${item.contact_phone}`}>
+                        Call →
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
