@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 export default function PrivacyPage() {
   return (
     <div className="wrap page">
@@ -7,8 +9,8 @@ export default function PrivacyPage() {
 
         <p>
           This policy explains what information SwapYard collects, why, and how it&apos;s used.
-          SwapYard is a private, members-only noticeboard for independent merchant outlets to
-          list and request surplus stock — it is not a public consumer service.
+          SwapYard is a private noticeboard for independent merchant outlets to list and request
+          surplus stock — it is not a public consumer service.
         </p>
 
         <h2>What we collect</h2>
