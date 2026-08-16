@@ -23,6 +23,7 @@ export default function Footer() {
           <div className="footer-col">
             <span className="footer-col-title">Resources</span>
             <a href="/aged-stock-guide">Aged Stock Guide</a>
+            <a href="/faq">FAQ</a>
           </div>
           <div className="footer-col">
             <span className="footer-col-title">Legal</span>

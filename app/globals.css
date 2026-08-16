@@ -277,6 +277,29 @@ form { display: flex; flex-direction: column; gap: 14px; }
 }
 .calc-guide-link:hover { color: var(--paper); text-decoration: underline; }
 
+.faq-list { display: flex; flex-direction: column; gap: 10px; margin: 24px 0 32px; }
+.faq-item {
+  background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 4px 18px;
+}
+.faq-item summary {
+  padding: 14px 0; cursor: pointer; font-weight: 700; font-size: 15px; color: var(--ink);
+  list-style: none; display: flex; justify-content: space-between; align-items: center;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; font-family: 'Archivo Black', sans-serif; color: var(--amber-dark); font-size: 18px; margin-left: 12px; }
+.faq-item[open] summary::after { content: '\2212'; }
+.faq-item p { padding: 0 0 16px; margin: 0; font-size: 14px; color: var(--steel); line-height: 1.6; }
+
+.skip-calc {
+  background: var(--paper-card); border: 1.5px dashed var(--amber-dark); border-radius: var(--radius);
+  padding: 22px; max-width: 420px; margin: 20px 0 32px;
+}
+.skip-calc-label { font-size: 13px; font-weight: 700; color: var(--steel); margin: 0 0 10px; }
+.skip-calc-input { max-width: 200px; }
+.skip-calc-result { font-size: 14.5px; color: var(--ink); line-height: 1.5; margin: 16px 0 0; }
+.skip-calc-result strong { color: var(--brick); }
+
 @media (max-width: 760px) {
   .calc-card { grid-template-columns: 1fr; padding: 26px; }
 }

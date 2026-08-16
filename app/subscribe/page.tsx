@@ -69,6 +69,9 @@ export default async function SubscribePage() {
                 Subscribe — €200/year
               </button>
             </form>
+            <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px' }}>
+              <a href="/faq" className="contact-link">Got questions first? Read the FAQ →</a>
+            </p>
           </>
         )}
       </div>

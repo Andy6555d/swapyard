@@ -36,7 +36,8 @@ export async function middleware(request: NextRequest) {
     path.startsWith('/signup') ||
     path.startsWith('/privacy') ||
     path.startsWith('/terms') ||
-    path.startsWith('/aged-stock-guide');
+    path.startsWith('/aged-stock-guide') ||
+    path.startsWith('/faq');
 
   if (!user && !isPublicPath) {
     const url = request.nextUrl.clone();

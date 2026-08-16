@@ -1,3 +1,5 @@
+import SkipCostCalculator from '@/components/SkipCostCalculator';
+
 export const dynamic = 'force-dynamic';
 
 export default function AgedStockGuidePage() {
@@ -57,6 +59,8 @@ export default function AgedStockGuidePage() {
           might genuinely need it. No commission, no middleman, you set the price and deal with
           the buyer directly.
         </p>
+
+        <SkipCostCalculator />
 
         <div className="legal-note" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
           <span style={{ flex: 1, minWidth: '220px' }}>
