@@ -30,9 +30,21 @@ export default function ListStockForm({ defaultCounty, hasPhone }: { defaultCoun
 
     const fileArray = Array.from(files).slice(0, 6);
     const urls: string[] = [];
+    const skipped: string[] = [];
+    const MAX_SIZE = 8 * 1024 * 1024; // 8MB
 
     for (let i = 0; i < fileArray.length; i++) {
       const file = fileArray[i];
+
+      if (!file.type.startsWith('image/')) {
+        skipped.push(`${file.name} (not an image)`);
+        continue;
+      }
+      if (file.size > MAX_SIZE) {
+        skipped.push(`${file.name} (over 8MB)`);
+        continue;
+      }
+
       setUploadStatus(`Uploading photo ${i + 1} of ${fileArray.length}…`);
       const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
       const fileName = `${user.id}/${Date.now()}-${i}-${safeName}`;
@@ -49,6 +61,9 @@ export default function ListStockForm({ defaultCounty, hasPhone }: { defaultCoun
         ? `${urls.length} photo${urls.length > 1 ? 's' : ''} ready to publish`
         : 'No photos uploaded — you can still publish without photos'
     );
+    if (skipped.length > 0) {
+      setUploadError(`Skipped: ${skipped.join(', ')}`);
+    }
     setUploading(false);
   }
 

@@ -58,6 +58,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               email={outlet?.contact_email}
               phone={outlet?.contact_phone}
               preferredContact={listing.preferred_contact ?? 'email'}
+              listingId={listing.id}
               revealClassName="btn btn-primary btn-sm"
               revealLabel="Show contact details"
               emailClassName="btn btn-secondary btn-sm"

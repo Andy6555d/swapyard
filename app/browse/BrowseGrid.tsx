@@ -107,6 +107,7 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
                     email={item.contact_email}
                     phone={item.contact_phone}
                     preferredContact={item.preferred_contact}
+                    listingId={item.id}
                   />
                 </div>
               </div>

@@ -129,9 +129,55 @@ export async function relist(formData: FormData) {
 export async function deleteListing(formData: FormData) {
   const supabase = await createClient();
   const listingId = formData.get('listingId') as string;
+
+  const { data: listing } = await supabase
+    .from('listings')
+    .select('image_urls')
+    .eq('id', listingId)
+    .single();
+
+  if (listing?.image_urls?.length) {
+    const marker = '/listing-images/';
+    const paths = (listing.image_urls as string[])
+      .map((url) => {
+        const idx = url.indexOf(marker);
+        return idx === -1 ? null : url.slice(idx + marker.length);
+      })
+      .filter((p): p is string => !!p);
+    if (paths.length) {
+      await supabase.storage.from('listing-images').remove(paths);
+    }
+  }
+
   await supabase.from('listings').delete().eq('id', listingId);
   revalidatePath('/');
   revalidatePath('/my-listings');
+}
+
+export async function logContactReveal(listingId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase.from('listing_events').insert({
+    listing_id: listingId,
+    event_type: 'contact_revealed',
+    viewer_id: user.id,
+  });
+}
+
+export async function logRequestInterest(requestId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase.from('listing_events').insert({
+    request_id: requestId,
+    event_type: 'request_interest',
+    viewer_id: user.id,
+  });
 }
 
 export async function createRequest(formData: FormData) {

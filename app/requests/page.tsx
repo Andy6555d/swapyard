@@ -3,6 +3,7 @@ import { createRequest, markRequestFulfilled, deleteRequest } from '../actions';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import SubmitButton from '@/components/SubmitButton';
+import RequestInterestLink from './RequestInterestLink';
 
 export const dynamic = 'force-dynamic';
 
@@ -109,9 +110,7 @@ export default async function RequestsPage({
                       </form>
                     </div>
                   ) : (
-                    <a className="contact-link" href={`mailto:${r.profiles?.contact_email}`}>
-                      I have this →
-                    </a>
+                    <RequestInterestLink requestId={r.id} email={r.profiles?.contact_email} />
                   )}
                 </div>
               </div>

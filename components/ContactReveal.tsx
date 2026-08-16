@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { logContactReveal } from '@/app/actions';
 
 export default function ContactReveal({
   email,
   phone,
   preferredContact,
+  listingId,
   revealClassName = 'contact-link',
   emailClassName = 'contact-link',
   phoneClassName = 'contact-link',
@@ -14,6 +16,7 @@ export default function ContactReveal({
   email?: string | null;
   phone?: string | null;
   preferredContact: string;
+  listingId?: string;
   revealClassName?: string;
   emailClassName?: string;
   phoneClassName?: string;
@@ -21,9 +24,16 @@ export default function ContactReveal({
 }) {
   const [revealed, setRevealed] = useState(false);
 
+  function handleReveal() {
+    setRevealed(true);
+    if (listingId) {
+      logContactReveal(listingId).catch(() => {});
+    }
+  }
+
   if (!revealed) {
     return (
-      <button type="button" className={revealClassName} onClick={() => setRevealed(true)}>
+      <button type="button" className={revealClassName} onClick={handleReveal}>
         {revealLabel}
       </button>
     );
