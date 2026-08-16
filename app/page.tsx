@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import AgedStockCalculator from '@/components/AgedStockCalculator';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,6 +54,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <AgedStockCalculator />
 
       <section className="wrap">
         <div className="page-head" style={{ marginTop: '44px' }}>
