@@ -71,6 +71,7 @@ export default function AgedStockCalculator() {
             )}
 
             <a href="/signup" className="btn btn-primary">Start moving it →</a>
+            <a href="/aged-stock-guide" className="calc-guide-link">What counts as aged stock? →</a>
           </div>
         </div>
       </div>

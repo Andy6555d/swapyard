@@ -272,6 +272,10 @@ form { display: flex; flex-direction: column; gap: 14px; }
 .calc-multiplier { font-size: 14.5px; line-height: 1.5; margin: 0 0 22px; }
 .calc-multiplier strong { color: var(--amber); }
 .calc-result .btn { width: 100%; justify-content: center; }
+.calc-guide-link {
+  display: block; margin-top: 12px; font-size: 12.5px; color: #8CA0AC; text-decoration: none;
+}
+.calc-guide-link:hover { color: var(--paper); text-decoration: underline; }
 
 @media (max-width: 760px) {
   .calc-card { grid-template-columns: 1fr; padding: 26px; }
