@@ -10,7 +10,7 @@ export const runtime = 'nodejs';
 // This checks both locations so it works regardless of API version.
 function getPeriodEnd(subscription: Stripe.Subscription): string | null {
   const topLevel = (subscription as any).current_period_end;
-  const itemLevel = subscription.items?.data?.[0]?.current_period_end;
+  const itemLevel = (subscription.items?.data?.[0] as any)?.current_period_end;
   const timestamp = topLevel ?? itemLevel;
   if (!timestamp) return null;
   return new Date(timestamp * 1000).toISOString();
