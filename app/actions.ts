@@ -72,6 +72,7 @@ export async function createListing(formData: FormData) {
   const county = formData.get('county') as string;
   const quantity = formData.get('quantity') as string;
   const price = parseFloat(formData.get('price') as string);
+  const preferredContact = (formData.get('preferredContact') as string) || 'email';
 
   let imageUrls: string[] = [];
   try {
@@ -85,6 +86,7 @@ export async function createListing(formData: FormData) {
     title,
     description,
     category,
+    preferred_contact: preferredContact,
     county,
     quantity,
     price,
@@ -104,6 +106,14 @@ export async function markSold(formData: FormData) {
   const supabase = await createClient();
   const listingId = formData.get('listingId') as string;
   await supabase.from('listings').update({ status: 'sold' }).eq('id', listingId);
+  revalidatePath('/');
+  revalidatePath('/my-listings');
+}
+
+export async function markReserved(formData: FormData) {
+  const supabase = await createClient();
+  const listingId = formData.get('listingId') as string;
+  await supabase.from('listings').update({ status: 'reserved' }).eq('id', listingId);
   revalidatePath('/');
   revalidatePath('/my-listings');
 }

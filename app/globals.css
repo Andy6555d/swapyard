@@ -141,6 +141,9 @@ form { display: flex; flex-direction: column; gap: 14px; }
 .file-field input { margin-top: 8px; }
 .upload-status { margin: 8px 0 0; font-size: 12.5px; color: var(--steel); font-family: 'IBM Plex Mono', monospace; }
 .upload-error { margin: 8px 0 0; font-size: 12.5px; color: var(--brick); font-weight: 600; }
+.radio-group { display: flex; gap: 18px; flex-wrap: wrap; }
+.radio-option { display: flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--ink); cursor: pointer; font-weight: 500; }
+.radio-option input { width: 16px; height: 16px; cursor: pointer; }
 
 /* Filter bar */
 .filterbar { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
@@ -247,6 +250,20 @@ form { display: flex; flex-direction: column; gap: 14px; }
   font-size: 10.5px; padding: 3px 8px; border-radius: 100px;
 }
 
+.status-stamp {
+  position: absolute; top: 22px; left: -38px; width: 180px; z-index: 4;
+  padding: 6px 0; text-align: center; transform: rotate(-30deg);
+  font-family: 'Archivo Black', sans-serif; font-size: 15px; letter-spacing: 0.06em;
+  color: #fff; background: rgba(166, 58, 44, 0.88);
+  border-top: 2px solid rgba(255,255,255,0.65); border-bottom: 2px solid rgba(255,255,255,0.65);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35); pointer-events: none;
+}
+.status-stamp.reserved { background: rgba(226, 167, 59, 0.92); color: var(--ink); }
+
+button.contact-link {
+  background: none; border: none; padding: 0; cursor: pointer; font-family: inherit;
+}
+
 /* Listing detail page */
 .back-link {
   display: inline-block; font-size: 13px; font-weight: 600; color: var(--steel);
@@ -254,6 +271,8 @@ form { display: flex; flex-direction: column; gap: 14px; }
 }
 .back-link:hover { color: var(--ink); }
 .listing-detail { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
+.listing-gallery { position: relative; }
+.detail-stamp { top: 40px; left: -50px; width: 240px; font-size: 20px; padding: 9px 0; }
 .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .gallery-grid .gallery-item:first-child { grid-column: 1 / -1; }
 .gallery-item {

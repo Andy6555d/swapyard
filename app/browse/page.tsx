@@ -9,7 +9,7 @@ export default async function BrowsePage() {
   const { data: listings } = await supabase
     .from('listings')
     .select('*, profiles(outlet_name, contact_email, contact_phone)')
-    .eq('status', 'active')
+    .in('status', ['active', 'reserved'])
     .order('created_at', { ascending: false });
 
   const formatted = (listings ?? []).map((item: any) => ({
@@ -22,6 +22,7 @@ export default async function BrowsePage() {
     price: item.price,
     image_urls: item.image_urls ?? [],
     status: item.status,
+    preferred_contact: item.preferred_contact ?? 'email',
     outlet_name: item.profiles?.outlet_name ?? 'Outlet',
     contact_email: item.profiles?.contact_email ?? '',
     contact_phone: item.profiles?.contact_phone ?? null,
@@ -31,7 +32,7 @@ export default async function BrowsePage() {
     <div className="wrap page">
       <div className="page-head">
         <h1>Browse Stock</h1>
-        <span className="sub">{formatted.length} ACTIVE LISTINGS</span>
+        <span className="sub">{formatted.length} LISTINGS</span>
       </div>
       <BrowseGrid listings={formatted} />
     </div>

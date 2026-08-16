@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { markSold, relist, deleteListing } from '../actions';
+import { markSold, markReserved, relist, deleteListing } from '../actions';
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
@@ -20,13 +20,14 @@ export default async function MyListingsPage() {
 
   const items = listings ?? [];
   const activeCount = items.filter((i) => i.status === 'active').length;
+  const reservedCount = items.filter((i) => i.status === 'reserved').length;
   const soldCount = items.filter((i) => i.status === 'sold').length;
 
   return (
     <div className="wrap page">
       <div className="page-head">
         <h1>My Listings</h1>
-        <span className="sub">{activeCount} ACTIVE · {soldCount} SOLD</span>
+        <span className="sub">{activeCount} ACTIVE · {reservedCount} RESERVED · {soldCount} SOLD</span>
       </div>
 
       {items.length === 0 ? (
@@ -37,10 +38,15 @@ export default async function MyListingsPage() {
         <div className="grid">
           {items.map((item) => (
             <div className="card" key={item.id}>
-              <div className={`tag ${item.status === 'sold' ? 'sold' : ''}`}>
-                {item.status === 'sold' ? 'SOLD' : `€${Number(item.price).toLocaleString()}`}
+              <div className={`tag ${item.status !== 'active' ? 'sold' : ''}`}>
+                €{Number(item.price).toLocaleString()}
               </div>
               <div className="card-media">
+                {item.status !== 'active' && (
+                  <div className={`status-stamp ${item.status}`}>
+                    {item.status === 'reserved' ? 'RESERVED' : 'SOLD'}
+                  </div>
+                )}
                 {item.image_urls?.[0] ? (
                   <img src={item.image_urls[0]} alt={item.title} loading="lazy" />
                 ) : (
@@ -52,13 +58,32 @@ export default async function MyListingsPage() {
                 <p className="card-title">{item.title}</p>
                 <p className="card-desc">{item.description}</p>
                 {item.quantity && <p className="card-meta">Quantity: {item.quantity}</p>}
-                <div className="card-foot" style={{ justifyContent: 'flex-start' }}>
-                  {item.status === 'active' ? (
-                    <form action={markSold}>
-                      <input type="hidden" name="listingId" value={item.id} />
-                      <button type="submit" className="btn btn-secondary btn-sm">Mark as Sold</button>
-                    </form>
-                  ) : (
+                <div className="card-foot" style={{ justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+                  {item.status === 'active' && (
+                    <>
+                      <form action={markReserved}>
+                        <input type="hidden" name="listingId" value={item.id} />
+                        <button type="submit" className="btn btn-ghost btn-sm">Mark Reserved</button>
+                      </form>
+                      <form action={markSold}>
+                        <input type="hidden" name="listingId" value={item.id} />
+                        <button type="submit" className="btn btn-secondary btn-sm">Mark as Sold</button>
+                      </form>
+                    </>
+                  )}
+                  {item.status === 'reserved' && (
+                    <>
+                      <form action={markSold}>
+                        <input type="hidden" name="listingId" value={item.id} />
+                        <button type="submit" className="btn btn-secondary btn-sm">Mark as Sold</button>
+                      </form>
+                      <form action={relist}>
+                        <input type="hidden" name="listingId" value={item.id} />
+                        <button type="submit" className="btn btn-ghost btn-sm">Relist</button>
+                      </form>
+                    </>
+                  )}
+                  {item.status === 'sold' && (
                     <form action={relist}>
                       <input type="hidden" name="listingId" value={item.id} />
                       <button type="submit" className="btn btn-ghost btn-sm">Relist</button>

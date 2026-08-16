@@ -10,13 +10,15 @@ export default async function ListStockPage() {
   } = await supabase.auth.getUser();
 
   let defaultCounty = '';
+  let hasPhone = false;
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('county')
+      .select('county, contact_phone')
       .eq('id', user.id)
       .single();
     defaultCounty = profile?.county ?? '';
+    hasPhone = !!profile?.contact_phone;
   }
 
   return (
@@ -26,7 +28,7 @@ export default async function ListStockPage() {
         <span className="sub">TAKES ~2 MINUTES</span>
       </div>
       <div style={{ maxWidth: 560 }}>
-        <ListStockForm defaultCounty={defaultCounty} />
+        <ListStockForm defaultCounty={defaultCounty} hasPhone={hasPhone} />
       </div>
     </div>
   );

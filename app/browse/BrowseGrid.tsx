@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
+import ContactReveal from '@/components/ContactReveal';
 
 type Listing = {
   id: string;
@@ -13,6 +14,7 @@ type Listing = {
   price: number;
   image_urls: string[];
   status: string;
+  preferred_contact: string;
   outlet_name: string;
   contact_email: string;
   contact_phone: string | null;
@@ -72,11 +74,16 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
         <div className="grid">
           {filtered.map((item) => (
             <div className="card" key={item.id}>
-              <div className={`tag ${item.status === 'sold' ? 'sold' : ''}`}>
-                {item.status === 'sold' ? 'SOLD' : `€${Number(item.price).toLocaleString()}`}
+              <div className={`tag ${item.status !== 'active' ? 'sold' : ''}`}>
+                €{Number(item.price).toLocaleString()}
               </div>
               <a href={`/listings/${item.id}`} className="card-link-area">
                 <div className="card-media">
+                  {item.status !== 'active' && (
+                    <div className={`status-stamp ${item.status}`}>
+                      {item.status === 'reserved' ? 'RESERVED' : 'SOLD'}
+                    </div>
+                  )}
                   {item.image_urls?.[0] ? (
                     <img src={item.image_urls[0]} alt={item.title} loading="lazy" />
                   ) : (
@@ -96,16 +103,11 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
               <div className="card-body" style={{ paddingTop: 0 }}>
                 <div className="card-foot">
                   <span className="stamp">{item.outlet_name} · {item.county}</span>
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <a className="contact-link" href={`mailto:${item.contact_email}`}>
-                      Email →
-                    </a>
-                    {item.contact_phone && (
-                      <a className="contact-link" href={`tel:${item.contact_phone}`}>
-                        Call →
-                      </a>
-                    )}
-                  </div>
+                  <ContactReveal
+                    email={item.contact_email}
+                    phone={item.contact_phone}
+                    preferredContact={item.preferred_contact}
+                  />
                 </div>
               </div>
             </div>

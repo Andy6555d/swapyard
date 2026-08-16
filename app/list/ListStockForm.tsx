@@ -6,7 +6,7 @@ import { createListing } from '../actions';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import SubmitButton from '@/components/SubmitButton';
 
-export default function ListStockForm({ defaultCounty }: { defaultCounty: string }) {
+export default function ListStockForm({ defaultCounty, hasPhone }: { defaultCounty: string; hasPhone: boolean }) {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
@@ -99,6 +99,30 @@ export default function ListStockForm({ defaultCounty }: { defaultCounty: string
           <span>€</span>
           <input type="number" id="price" name="price" min="0" step="0.01" required />
         </div>
+      </div>
+      <div className="field">
+        <label>Preferred contact for this listing</label>
+        <div className="radio-group">
+          <label className="radio-option">
+            <input type="radio" name="preferredContact" value="email" defaultChecked />
+            <span>Email only</span>
+          </label>
+          {hasPhone && (
+            <>
+              <label className="radio-option">
+                <input type="radio" name="preferredContact" value="phone" />
+                <span>Phone only</span>
+              </label>
+              <label className="radio-option">
+                <input type="radio" name="preferredContact" value="both" />
+                <span>Both</span>
+              </label>
+            </>
+          )}
+        </div>
+        {!hasPhone && (
+          <p className="upload-status">Add a phone number to your account to offer phone contact.</p>
+        )}
       </div>
       <div className="field">
         <label htmlFor="images">Photos (up to 6)</label>
