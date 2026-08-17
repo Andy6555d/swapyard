@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { markSold, markReserved, relist, deleteListing } from '../actions';
 import { redirect } from 'next/navigation';
+import AddPhotosButton from '@/components/AddPhotosButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,6 +60,7 @@ export default async function MyListingsPage() {
                 <p className="card-desc">{item.description}</p>
                 {item.quantity && <p className="card-meta">Quantity: {item.quantity}</p>}
                 <div className="card-foot" style={{ justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+                  <AddPhotosButton listingId={item.id} currentCount={item.image_urls?.length ?? 0} />
                   {item.status === 'active' && (
                     <>
                       <form action={markReserved}>

@@ -30,6 +30,9 @@ export default async function ListStockPage() {
       <div style={{ maxWidth: 560 }}>
         <ListStockForm defaultCounty={defaultCounty} hasPhone={hasPhone} />
       </div>
+      <p style={{ marginTop: '20px', maxWidth: 560 }}>
+        <a href="/list/bulk" className="contact-link">Got a lot to list at once? Try bulk upload →</a>
+      </p>
     </div>
   );
 }

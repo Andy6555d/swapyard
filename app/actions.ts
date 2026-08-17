@@ -141,6 +141,33 @@ export async function relist(formData: FormData) {
   revalidatePath('/my-listings');
 }
 
+export async function addPhotosToListing(listingId: string, newUrls: string[]) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { success: false };
+
+  const { data: listing } = await supabase
+    .from('listings')
+    .select('image_urls, outlet_id')
+    .eq('id', listingId)
+    .single();
+
+  if (!listing || listing.outlet_id !== user.id) {
+    return { success: false };
+  }
+
+  const existing: string[] = listing.image_urls ?? [];
+  const combined = [...existing, ...newUrls].slice(0, 6);
+
+  await supabase.from('listings').update({ image_urls: combined }).eq('id', listingId);
+
+  revalidatePath('/my-listings');
+  revalidatePath('/');
+  return { success: true, count: combined.length };
+}
+
 export async function deleteListing(formData: FormData) {
   const supabase = await createClient();
   const listingId = formData.get('listingId') as string;
