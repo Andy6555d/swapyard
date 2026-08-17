@@ -11,7 +11,7 @@ export default function TermsPage() {
         <p>
           SwapYard is a noticeboard that lets independent merchant outlets list surplus or aged
           stock for other outlets to buy, and post requests for stock they&apos;re looking for.
-          SwapYard connects outlets to each other — it does not process payments, arrange
+          SwapYard connects outlets to each other. It does not process payments, arrange
           delivery, or take a commission on any transaction.
         </p>
 
@@ -31,25 +31,39 @@ export default function TermsPage() {
 
         <h2>Listings and requests</h2>
         <p>
-          You&apos;re responsible for the accuracy of anything you post — descriptions,
+          You&apos;re responsible for the accuracy of anything you post, including descriptions,
           condition, quantity, and price. SwapYard does not inspect, verify, or guarantee any
           stock listed on the platform.
         </p>
 
         <h2>Transactions are between outlets</h2>
         <p>
-          Once contact is made through a listing or request, any deal — including price,
-          payment, condition, and delivery — is agreed and carried out directly between the
-          outlets involved. SwapYard is not a party to that transaction and is not responsible
-          for disputes, damaged or misdescribed stock, non-payment, or delivery issues arising
+          Once contact is made through a listing or request, any deal, including price, payment,
+          condition, and delivery, is agreed and carried out directly between the outlets
+          involved. SwapYard is not a party to that transaction and is not responsible for
+          disputes, damaged or misdescribed stock, non-payment, or delivery issues arising
           between outlets.
+        </p>
+        <p>
+          Listings and requests reflect the claims made by the outlet that posted them. SwapYard
+          does not verify these claims and does not act as agent for either outlet in a
+          transaction. Nothing on SwapYard should be read as a representation, endorsement, or
+          guarantee made by SwapYard about any listing, request, or outlet.
         </p>
 
         <h2>Fees</h2>
         <p>
           SwapYard may introduce an access fee for outlets using the platform. Any such fee, and
-          its terms, will be communicated directly to outlets before being applied — nothing will
+          its terms, will be communicated directly to outlets before being applied. Nothing will
           be charged without notice.
+        </p>
+
+        <h2>Refunds and cancellation</h2>
+        <p>
+          You can cancel your subscription at any time through the Billing page, which takes you
+          to a self serve billing portal. Cancelling stops future renewal charges, but access
+          continues until the end of the period you have already paid for. Fees already paid are
+          non refundable, except where required by law.
         </p>
 
         <h2>Acceptable use</h2>
@@ -73,11 +87,22 @@ export default function TermsPage() {
           platform, or is inactive.
         </p>
 
+        <h2>Your responsibility to us</h2>
+        <p>
+          If your use of SwapYard, including any listing, request, or dealing with another
+          outlet, results in a claim, loss, or cost to SwapYard, for example due to fraud,
+          misrepresentation, a breach of these terms, or a dispute with another outlet, you agree
+          to cover those reasonable costs. This does not apply where the claim results from our
+          own breach of these terms or our own negligence.
+        </p>
+
         <h2>No warranty</h2>
         <p>
-          SwapYard is provided as-is. We don&apos;t guarantee the platform will be uninterrupted
+          SwapYard is provided as is. We don&apos;t guarantee the platform will be uninterrupted
           or error-free, and we&apos;re not liable for losses arising from stock quality, deals
-          made between outlets, or platform downtime.
+          made between outlets, or platform downtime. Where a court does not accept a full
+          exclusion of liability, our total liability to you under these terms is limited to the
+          fees you paid us in the 12 months before the claim arose.
         </p>
 
         <h2>Changes to these terms</h2>
@@ -87,7 +112,10 @@ export default function TermsPage() {
         </p>
 
         <h2>Governing law</h2>
-        <p>These terms are governed by the laws of Ireland.</p>
+        <p>
+          These terms are governed by the laws of Ireland, and the courts of Ireland have
+          exclusive jurisdiction over any dispute arising from them.
+        </p>
 
         <h2>Contact</h2>
         <p>
