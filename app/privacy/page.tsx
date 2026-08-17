@@ -5,22 +5,23 @@ export default function PrivacyPage() {
     <div className="wrap page">
       <div className="legal-page">
         <h1>Privacy Policy</h1>
-        <p className="legal-updated">Last updated: 14 August 2026</p>
+        <p className="legal-updated">Last updated: 16 August 2026</p>
 
         <p>
           This policy explains what information SwapYard collects, why, and how it&apos;s used.
-          SwapYard is a private, members-only noticeboard for independent merchant outlets to
-          list and request surplus stock — it is not a public consumer service.
+          SwapYard is a private noticeboard for independent merchant outlets to list and request
+          surplus stock. It is not a public consumer service.
         </p>
 
         <h2>What we collect</h2>
         <ul>
           <li>Outlet name, county, and contact email (required at registration)</li>
           <li>Contact phone number (optional, if you choose to provide it)</li>
-          <li>Content you post: listing titles, descriptions, categories, prices, quantities, and photos; and any requests you post</li>
-          <li>Your account password — this is handled by our authentication provider (Supabase) and is never visible to us in plain text</li>
-          <li>Basic activity on listings and requests — specifically, when you click &quot;Show contact&quot; on a listing or &quot;I have this&quot; on a request, we record that this happened, tied to your account</li>
-          <li>If you enable push notifications, we store a device subscription reference and your chosen category/county preferences, so we know what to notify you about</li>
+          <li>Content you post: listing titles, descriptions, categories, prices, quantities, and photos, and any requests you post</li>
+          <li>Your account password. This is handled by our authentication provider (Supabase) and is never visible to us in plain text</li>
+          <li>Basic activity on listings and requests, specifically when you click &quot;Show contact&quot; on a listing or &quot;I have this&quot; on a request, we record that this happened, tied to your account</li>
+          <li>If you enable push notifications, we store a device subscription reference and your chosen category and county preferences, so we know what to notify you about</li>
+          <li>If you subscribe, payment details processed by our payment provider, Stripe. We never see or store your full card number</li>
         </ul>
 
         <h2>How it&apos;s used</h2>
@@ -37,21 +38,30 @@ export default function PrivacyPage() {
           third parties, or used for advertising.
         </p>
 
+        <h2>Payment information</h2>
+        <p>
+          If you subscribe to SwapYard, your payment is handled entirely by Stripe, our payment
+          processor. Stripe processes your name, email, and payment details to complete the
+          transaction and manage your subscription. We never see or store your full card details.
+          Stripe is a PCI compliant payment processor used by businesses worldwide. You can read
+          Stripe&apos;s own privacy policy at stripe.com/privacy.
+        </p>
+
         <h2>Who can see your information</h2>
         <ul>
           <li>Other logged-in outlets on SwapYard can see your outlet name, county, and contact details attached to anything you list or request</li>
-          <li>If you list or post a request, you can see activity on that specific listing or request (e.g. how many times contact was revealed) — not who did it individually</li>
+          <li>If you list or post a request, you can see activity on that specific listing or request, such as how many times contact was revealed, but not who did it individually</li>
           <li>The platform administrator can see all outlet, listing, and activity data, and can take actions such as resetting a password or removing an account if needed</li>
-          <li>Nothing on SwapYard is visible to the public internet or search engines — an account is required to view listings, requests, or outlet details</li>
+          <li>Nothing on SwapYard is visible to the public internet or search engines. An account is required to view listings, requests, or outlet details</li>
         </ul>
 
         <h2>Cookies</h2>
         <p>
-          SwapYard uses one type of cookie: an essential login/session cookie that keeps you
+          SwapYard uses one type of cookie: an essential login and session cookie that keeps you
           signed in. This is separate from the activity data described above, which is stored
           directly in our database, not in a cookie. We do not use tracking, analytics, or
-          advertising cookies, and no third-party analytics tools (like Google Analytics) are used
-          on SwapYard.
+          advertising cookies, and no third-party analytics tools, such as Google Analytics, are
+          used on SwapYard.
         </p>
 
         <h2>Where your data is stored</h2>
