@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { savePushSubscription, disablePush } from './actions';
+import { savePushSubscription, disablePush } from '@/app/alerts/actions';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
