@@ -2,8 +2,13 @@
 
 import { useState, useMemo } from 'react';
 
+function formatWithCommas(n: number): string {
+  return n.toLocaleString('en-IE');
+}
+
 export default function AgedStockCalculator() {
   const [stockholding, setStockholding] = useState(750000);
+  const [stockholdingDisplay, setStockholdingDisplay] = useState('750,000.00');
   const [percentage, setPercentage] = useState(8);
 
   const agedValue = useMemo(() => stockholding * (percentage / 100), [stockholding, percentage]);
@@ -12,7 +17,27 @@ export default function AgedStockCalculator() {
     return recoveryValue > 0 ? recoveryValue / 200 : 0;
   }, [agedValue]);
 
-  const formatEuro = (n: number) => `€${Math.round(n).toLocaleString('en-IE')}`;
+  const formatEuro = (n: number) =>
+    `€${Math.round(n).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  function handleStockholdingChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    const num = raw === '' ? 0 : parseInt(raw, 10);
+    setStockholding(num);
+    setStockholdingDisplay(raw === '' ? '' : formatWithCommas(num));
+  }
+
+  function handleStockholdingFocus() {
+    setStockholdingDisplay(stockholding === 0 ? '' : formatWithCommas(stockholding));
+  }
+
+  function handleStockholdingBlur() {
+    setStockholdingDisplay(
+      stockholding === 0
+        ? '0.00'
+        : `${formatWithCommas(stockholding)}.00`
+    );
+  }
 
   return (
     <section className="calc-section">
@@ -26,12 +51,13 @@ export default function AgedStockCalculator() {
               <div className="calc-input-euro">
                 <span>€</span>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   id="calc-stockholding"
-                  min="0"
-                  step="1000"
-                  value={stockholding}
-                  onChange={(e) => setStockholding(Number(e.target.value) || 0)}
+                  value={stockholdingDisplay}
+                  onChange={handleStockholdingChange}
+                  onFocus={handleStockholdingFocus}
+                  onBlur={handleStockholdingBlur}
                 />
               </div>
             </div>
@@ -61,7 +87,7 @@ export default function AgedStockCalculator() {
 
             <div className="calc-compare-row">
               <span>SwapYard membership</span>
-              <span>€200/year</span>
+              <span>€200.00/year</span>
             </div>
             {multiplier > 0 && (
               <p className="calc-multiplier">
