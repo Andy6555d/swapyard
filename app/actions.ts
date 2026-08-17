@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { notifyMatchingSubscribers } from '@/lib/notifySubscribers';
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -81,20 +82,34 @@ export async function createListing(formData: FormData) {
     imageUrls = [];
   }
 
-  const { error } = await supabase.from('listings').insert({
-    outlet_id: user.id,
-    title,
-    description,
-    category,
-    preferred_contact: preferredContact,
-    county,
-    quantity,
-    price,
-    image_urls: imageUrls,
-  });
+  const { data: newListing, error } = await supabase
+    .from('listings')
+    .insert({
+      outlet_id: user.id,
+      title,
+      description,
+      category,
+      preferred_contact: preferredContact,
+      county,
+      quantity,
+      price,
+      image_urls: imageUrls,
+    })
+    .select('id')
+    .single();
 
   if (error) {
     redirect('/list?error=' + encodeURIComponent(error.message));
+  }
+
+  if (newListing) {
+    notifyMatchingSubscribers({
+      category,
+      county,
+      title,
+      excludeOutletId: user.id,
+      url: `/listings/${newListing.id}`,
+    }).catch(() => {});
   }
 
   revalidatePath('/');
@@ -192,16 +207,30 @@ export async function createRequest(formData: FormData) {
   const category = formData.get('category') as string;
   const county = formData.get('county') as string;
 
-  const { error } = await supabase.from('requests').insert({
-    outlet_id: user.id,
-    title,
-    description,
-    category,
-    county,
-  });
+  const { data: newRequest, error } = await supabase
+    .from('requests')
+    .insert({
+      outlet_id: user.id,
+      title,
+      description,
+      category,
+      county,
+    })
+    .select('id')
+    .single();
 
   if (error) {
     redirect('/requests?error=' + encodeURIComponent(error.message));
+  }
+
+  if (newRequest) {
+    notifyMatchingSubscribers({
+      category,
+      county,
+      title: `Request: ${title}`,
+      excludeOutletId: user.id,
+      url: `/requests`,
+    }).catch(() => {});
   }
 
   revalidatePath('/requests');

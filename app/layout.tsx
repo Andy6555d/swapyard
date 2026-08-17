@@ -34,6 +34,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1C2B39" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
@@ -57,6 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <a href="/list">List Stock</a>
                   <a href="/requests">Requests</a>
                   <a href="/my-listings">My Listings</a>
+                  <a href="/alerts">Alerts</a>
                   <a href="/subscribe">Billing</a>
                   {isAdmin && <a href="/admin">Admin</a>}
                 </nav>
