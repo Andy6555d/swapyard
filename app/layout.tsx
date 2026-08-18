@@ -2,6 +2,7 @@ import './globals.css';
 import { createClient } from '@/lib/supabase/server';
 import { logout } from './actions';
 import Footer from '@/components/Footer';
+import InstallPrompt from '@/components/InstallPrompt';
 
 export const metadata = {
   title: 'SwapYard — Merchant Stock Exchange',
@@ -75,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             )}
           </div>
         </header>
+        <InstallPrompt />
         {children}
         <Footer />
       </body>

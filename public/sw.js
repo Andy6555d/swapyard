@@ -1,3 +1,10 @@
+// Required by Chrome's install criteria. Deliberately a plain pass-through,
+// not a cache, since SwapYard's listings/requests must always show live
+// data, not a stale offline copy.
+self.addEventListener('fetch', (event) => {
+  event.respondWith(fetch(event.request));
+});
+
 self.addEventListener('push', (event) => {
   let data = { title: 'SwapYard', url: '/browse' };
   try {
