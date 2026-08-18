@@ -21,9 +21,10 @@ export default async function RequestsPage({
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('county, buying_group')
+    .select('county, buying_group, buying_group_verified')
     .eq('id', user.id)
     .single();
+  const verifiedBuyingGroup = profile?.buying_group_verified ? profile.buying_group : null;
 
   const { data: requests } = await supabase
     .from('requests')
@@ -81,7 +82,7 @@ export default async function RequestsPage({
               </select>
             </div>
           </div>
-          {profile?.buying_group && (
+          {verifiedBuyingGroup && (
             <div className="field">
               <label>Who can see this request?</label>
               <div className="radio-group">
@@ -91,7 +92,7 @@ export default async function RequestsPage({
                 </label>
                 <label className="radio-option">
                   <input type="radio" name="visibility" value="group" />
-                  <span>{profile.buying_group} members only</span>
+                  <span>{verifiedBuyingGroup} members only</span>
                 </label>
               </div>
             </div>

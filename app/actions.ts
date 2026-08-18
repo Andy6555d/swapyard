@@ -78,10 +78,13 @@ export async function createListing(formData: FormData) {
 
   const { data: ownProfile } = await supabase
     .from('profiles')
-    .select('buying_group')
+    .select('buying_group, buying_group_verified')
     .eq('id', user.id)
     .single();
-  const visibility = requestedVisibility === 'group' && ownProfile?.buying_group ? 'group' : 'all';
+  const visibility =
+    requestedVisibility === 'group' && ownProfile?.buying_group && ownProfile?.buying_group_verified
+      ? 'group'
+      : 'all';
 
   let imageUrls: string[] = [];
   try {
@@ -252,10 +255,13 @@ export async function createRequest(formData: FormData) {
 
   const { data: ownProfile } = await supabase
     .from('profiles')
-    .select('buying_group')
+    .select('buying_group, buying_group_verified')
     .eq('id', user.id)
     .single();
-  const visibility = requestedVisibility === 'group' && ownProfile?.buying_group ? 'group' : 'all';
+  const visibility =
+    requestedVisibility === 'group' && ownProfile?.buying_group && ownProfile?.buying_group_verified
+      ? 'group'
+      : 'all';
 
   const { data: newRequest, error } = await supabase
     .from('requests')

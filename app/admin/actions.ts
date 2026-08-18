@@ -90,6 +90,26 @@ export async function adminGrantAccess(formData: FormData) {
   revalidatePath('/admin');
 }
 
+export async function adminVerifyBuyingGroup(formData: FormData) {
+  await requireAdmin();
+  const outletId = formData.get('outletId') as string;
+
+  const admin = createAdminClient();
+  await admin.from('profiles').update({ buying_group_verified: true }).eq('id', outletId);
+
+  revalidatePath('/admin');
+}
+
+export async function adminUnverifyBuyingGroup(formData: FormData) {
+  await requireAdmin();
+  const outletId = formData.get('outletId') as string;
+
+  const admin = createAdminClient();
+  await admin.from('profiles').update({ buying_group_verified: false }).eq('id', outletId);
+
+  revalidatePath('/admin');
+}
+
 export async function adminRevokeAccess(formData: FormData) {
   await requireAdmin();
   const outletId = formData.get('outletId') as string;

@@ -19,7 +19,7 @@ export default async function AccountPage({
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('outlet_name, county, buying_group')
+    .select('outlet_name, county, buying_group, buying_group_verified')
     .eq('id', user.id)
     .single();
 
@@ -36,10 +36,20 @@ export default async function AccountPage({
           <h2 className="admin-section-title">Buying Group</h2>
           <p className="request-box-sub">
             We ask so you can choose, listing by listing, whether to share with everyone on
-            SwapYard or keep something just within your own buying group. Setting this here
-            doesn&apos;t change anything by itself, it just makes the group-only option available
-            when you post.
+            SwapYard or keep something just within your own buying group. Group claims are
+            reviewed before they unlock group-only sharing, so it can take a short while after
+            you set or change this before that option becomes available.
           </p>
+
+          {profile?.buying_group && (
+            <p style={{ marginBottom: '14px' }}>
+              {profile.buying_group_verified ? (
+                <span className="billing-badge billing-active">Verified ✓</span>
+              ) : (
+                <span className="billing-badge billing-past_due">Pending verification</span>
+              )}
+            </p>
+          )}
 
           <form action={updateBuyingGroup}>
             <div className="field">

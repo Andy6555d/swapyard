@@ -7,6 +7,8 @@ import {
   adminDeleteListing,
   adminGrantAccess,
   adminRevokeAccess,
+  adminVerifyBuyingGroup,
+  adminUnverifyBuyingGroup,
 } from './actions';
 
 export const dynamic = 'force-dynamic';
@@ -90,6 +92,7 @@ export default async function AdminPage({
               <th>Email</th>
               <th>Phone</th>
               <th>Billing</th>
+              <th>Buying Group</th>
               <th>Password</th>
               <th></th>
             </tr>
@@ -123,6 +126,33 @@ export default async function AdminPage({
                         </form>
                       )}
                     </div>
+                  )}
+                </td>
+                <td>
+                  {o.buying_group ? (
+                    <>
+                      <div style={{ fontSize: '12.5px', marginBottom: '6px' }}>{o.buying_group}</div>
+                      {o.buying_group_verified ? (
+                        <span className="billing-badge billing-active">Verified</span>
+                      ) : (
+                        <span className="billing-badge billing-past_due">Pending</span>
+                      )}
+                      <div style={{ marginTop: '6px' }}>
+                        {!o.buying_group_verified ? (
+                          <form action={adminVerifyBuyingGroup}>
+                            <input type="hidden" name="outletId" value={o.id} />
+                            <button type="submit" className="btn btn-ghost btn-sm">Verify</button>
+                          </form>
+                        ) : (
+                          <form action={adminUnverifyBuyingGroup}>
+                            <input type="hidden" name="outletId" value={o.id} />
+                            <button type="submit" className="btn btn-ghost btn-sm">Unverify</button>
+                          </form>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <span style={{ color: 'var(--steel)', fontSize: '12.5px' }}>—</span>
                   )}
                 </td>
                 <td>

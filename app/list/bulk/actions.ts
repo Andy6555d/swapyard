@@ -26,12 +26,12 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('contact_phone, outlet_name, buying_group')
+    .select('contact_phone, outlet_name, buying_group, buying_group_verified')
     .eq('id', user.id)
     .single();
   const hasPhone = !!profile?.contact_phone;
   const outletName = profile?.outlet_name || 'An outlet';
-  const buyingGroup = profile?.buying_group ?? null;
+  const buyingGroup = profile?.buying_group_verified ? (profile?.buying_group ?? null) : null;
 
   const validRows = rows.filter((r) => {
     const priceNum = Number(r.price);

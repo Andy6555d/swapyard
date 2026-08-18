@@ -12,10 +12,24 @@ export async function updateBuyingGroup(formData: FormData) {
   if (!user) redirect('/login');
 
   const buyingGroup = formData.get('buyingGroup') as string;
+  const newValue = buyingGroup === 'none' ? null : buyingGroup;
+
+  const { data: current } = await supabase
+    .from('profiles')
+    .select('buying_group')
+    .eq('id', user.id)
+    .single();
+
+  // Any actual change to the claimed group resets verification.
+  // Setting it back to the exact same value doesn't re-trigger review.
+  const changed = current?.buying_group !== newValue;
 
   await supabase
     .from('profiles')
-    .update({ buying_group: buyingGroup === 'none' ? null : buyingGroup })
+    .update({
+      buying_group: newValue,
+      ...(changed ? { buying_group_verified: false } : {}),
+    })
     .eq('id', user.id);
 
   revalidatePath('/account');

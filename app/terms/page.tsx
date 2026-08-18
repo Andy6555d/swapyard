@@ -25,10 +25,11 @@ export default function TermsPage() {
         <h2>Buying groups</h2>
         <p>
           You may optionally set a buying group on your account, and choose to make a listing or
-          request visible only to outlets who have set the same one. This is entirely self
-          reported. SwapYard does not verify buying group membership, and setting a buying group
-          does not mean that group has endorsed, partnered with, or is in any way affiliated with
-          SwapYard. It is simply a filter you can use to control who sees what you post.
+          request visible only to outlets in the same one. A group you claim is reviewed before
+          it unlocks group-only sharing, both for viewing others&apos; group-only content and for
+          restricting your own. Setting or verifying a buying group does not mean that group has
+          endorsed, partnered with, or is in any way affiliated with SwapYard. It is simply a
+          filter you can use to control who sees what you post.
         </p>
 
         <h2>Your account</h2>

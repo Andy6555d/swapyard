@@ -15,12 +15,12 @@ export default async function BulkUploadPage() {
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('county, contact_phone, buying_group')
+      .select('county, contact_phone, buying_group, buying_group_verified')
       .eq('id', user.id)
       .single();
     defaultCounty = profile?.county ?? '';
     hasPhone = !!profile?.contact_phone;
-    buyingGroup = profile?.buying_group ?? null;
+    buyingGroup = profile?.buying_group_verified ? (profile.buying_group ?? null) : null;
   }
 
   return (
