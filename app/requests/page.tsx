@@ -99,10 +99,16 @@ export default async function RequestsPage({
                 <div className="card-foot">
                   <span className="stamp">{r.profiles?.outlet_name ?? 'Outlet'} · {r.county}</span>
                   {r.outlet_id === user.id ? (
-                    <div style={{ display: 'flex', gap: '6px' }}>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                       <form action={markRequestFulfilled}>
                         <input type="hidden" name="requestId" value={r.id} />
-                        <button type="submit" className="btn btn-secondary btn-sm">Fulfilled</button>
+                        <input type="hidden" name="fulfilledViaSwapYard" value="true" />
+                        <button type="submit" className="btn btn-secondary btn-sm">Fulfilled via SwapYard</button>
+                      </form>
+                      <form action={markRequestFulfilled}>
+                        <input type="hidden" name="requestId" value={r.id} />
+                        <input type="hidden" name="fulfilledViaSwapYard" value="false" />
+                        <button type="submit" className="btn btn-ghost btn-sm">Fulfilled Elsewhere</button>
                       </form>
                       <form action={deleteRequest}>
                         <input type="hidden" name="requestId" value={r.id} />

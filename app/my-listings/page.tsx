@@ -69,7 +69,13 @@ export default async function MyListingsPage() {
                       </form>
                       <form action={markSold}>
                         <input type="hidden" name="listingId" value={item.id} />
-                        <button type="submit" className="btn btn-secondary btn-sm">Mark as Sold</button>
+                        <input type="hidden" name="soldViaSwapYard" value="true" />
+                        <button type="submit" className="btn btn-secondary btn-sm">Sold via SwapYard</button>
+                      </form>
+                      <form action={markSold}>
+                        <input type="hidden" name="listingId" value={item.id} />
+                        <input type="hidden" name="soldViaSwapYard" value="false" />
+                        <button type="submit" className="btn btn-ghost btn-sm">Sold Elsewhere</button>
                       </form>
                     </>
                   )}
@@ -77,7 +83,13 @@ export default async function MyListingsPage() {
                     <>
                       <form action={markSold}>
                         <input type="hidden" name="listingId" value={item.id} />
-                        <button type="submit" className="btn btn-secondary btn-sm">Mark as Sold</button>
+                        <input type="hidden" name="soldViaSwapYard" value="true" />
+                        <button type="submit" className="btn btn-secondary btn-sm">Sold via SwapYard</button>
+                      </form>
+                      <form action={markSold}>
+                        <input type="hidden" name="listingId" value={item.id} />
+                        <input type="hidden" name="soldViaSwapYard" value="false" />
+                        <button type="submit" className="btn btn-ghost btn-sm">Sold Elsewhere</button>
                       </form>
                       <form action={relist}>
                         <input type="hidden" name="listingId" value={item.id} />

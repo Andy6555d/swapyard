@@ -36,6 +36,13 @@ export default async function AdminPage({
     .from('listings')
     .select('*, profiles(outlet_name)')
     .order('created_at', { ascending: false });
+  const { data: requests } = await supabase.from('requests').select('status, fulfilled_via_swapyard');
+
+  const confirmedSales = (listings ?? []).filter((l) => l.status === 'sold' && l.sold_via_swapyard === true);
+  const confirmedValue = confirmedSales.reduce((sum, l) => sum + Number(l.price || 0), 0);
+  const confirmedRequestsFulfilled = (requests ?? []).filter(
+    (r) => r.status === 'fulfilled' && r.fulfilled_via_swapyard === true
+  ).length;
 
   return (
     <div className="wrap page">
@@ -48,6 +55,30 @@ export default async function AdminPage({
 
       {params.error && <div className="error-box">{params.error}</div>}
       {params.success && <div className="success-box">{params.success}</div>}
+
+      <h2 className="admin-section-title">Confirmed Outcomes</h2>
+      <div className="admin-table-wrap" style={{ padding: '20px', marginBottom: '28px' }}>
+        <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+          <div>
+            <div className="calc-result-line" style={{ color: 'var(--steel)' }}>Stock value moved through SwapYard</div>
+            <div style={{ fontFamily: 'Archivo Black, sans-serif', fontSize: '28px', color: 'var(--amber-dark)' }}>
+              €{confirmedValue.toLocaleString()}
+            </div>
+          </div>
+          <div>
+            <div className="calc-result-line" style={{ color: 'var(--steel)' }}>Confirmed transactions</div>
+            <div style={{ fontFamily: 'Archivo Black, sans-serif', fontSize: '28px', color: 'var(--ink)' }}>
+              {confirmedSales.length}
+            </div>
+          </div>
+          <div>
+            <div className="calc-result-line" style={{ color: 'var(--steel)' }}>Requests fulfilled via SwapYard</div>
+            <div style={{ fontFamily: 'Archivo Black, sans-serif', fontSize: '28px', color: 'var(--ink)' }}>
+              {confirmedRequestsFulfilled}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h2 className="admin-section-title">Outlets</h2>
       <div className="admin-table-wrap">

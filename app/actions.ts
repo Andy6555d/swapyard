@@ -120,7 +120,11 @@ export async function createListing(formData: FormData) {
 export async function markSold(formData: FormData) {
   const supabase = await createClient();
   const listingId = formData.get('listingId') as string;
-  await supabase.from('listings').update({ status: 'sold' }).eq('id', listingId);
+  const soldViaSwapYard = formData.get('soldViaSwapYard') === 'true';
+  await supabase
+    .from('listings')
+    .update({ status: 'sold', sold_via_swapyard: soldViaSwapYard })
+    .eq('id', listingId);
   revalidatePath('/');
   revalidatePath('/my-listings');
 }
@@ -267,7 +271,11 @@ export async function createRequest(formData: FormData) {
 export async function markRequestFulfilled(formData: FormData) {
   const supabase = await createClient();
   const requestId = formData.get('requestId') as string;
-  await supabase.from('requests').update({ status: 'fulfilled' }).eq('id', requestId);
+  const fulfilledViaSwapYard = formData.get('fulfilledViaSwapYard') === 'true';
+  await supabase
+    .from('requests')
+    .update({ status: 'fulfilled', fulfilled_via_swapyard: fulfilledViaSwapYard })
+    .eq('id', requestId);
   revalidatePath('/requests');
 }
 
