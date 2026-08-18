@@ -13,6 +13,7 @@ type BulkRow = {
   county: string;
   quantity: string;
   price: string;
+  preferredContact: string;
 };
 
 export async function createBulkListings(rows: BulkRow[], fallbackCounty: string) {
@@ -21,6 +22,13 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect('/login');
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('contact_phone')
+    .eq('id', user.id)
+    .single();
+  const hasPhone = !!profile?.contact_phone;
 
   const validRows = rows.filter((r) => {
     const priceNum = Number(r.price);
@@ -38,17 +46,24 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
     return { success: false, count: 0 };
   }
 
-  const toInsert = validRows.map((r) => ({
-    outlet_id: user.id,
-    title: r.title.trim(),
-    description: r.description.trim(),
-    category: r.category.trim(),
-    county: r.county.trim() || fallbackCounty,
-    quantity: r.quantity?.trim() || null,
-    price: Number(r.price),
-    preferred_contact: 'email',
-    image_urls: [],
-  }));
+  const toInsert = validRows.map((r) => {
+    const contact = ['email', 'phone', 'both'].includes(r.preferredContact)
+      ? r.preferredContact
+      : 'email';
+    const safeContact = (contact === 'phone' || contact === 'both') && !hasPhone ? 'email' : contact;
+
+    return {
+      outlet_id: user.id,
+      title: r.title.trim(),
+      description: r.description.trim(),
+      category: r.category.trim(),
+      county: r.county.trim() || fallbackCounty,
+      quantity: r.quantity?.trim() || null,
+      price: Number(r.price),
+      preferred_contact: safeContact,
+      image_urls: [],
+    };
+  });
 
   const { data: inserted, error } = await supabase.from('listings').insert(toInsert).select('id, category, county, title');
 

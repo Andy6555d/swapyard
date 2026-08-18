@@ -12,10 +12,19 @@ type ParsedRow = {
   county: string;
   quantity: string;
   price: string;
+  preferredContact: string;
   errors: string[];
 };
 
-export default function BulkUploadForm({ defaultCounty }: { defaultCounty: string }) {
+const CONTACT_OPTIONS = ['email', 'phone', 'both'];
+
+export default function BulkUploadForm({
+  defaultCounty,
+  hasPhone,
+}: {
+  defaultCounty: string;
+  hasPhone: boolean;
+}) {
   const [rows, setRows] = useState<ParsedRow[]>([]);
   const [parsing, setParsing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -29,6 +38,8 @@ export default function BulkUploadForm({ defaultCounty }: { defaultCounty: strin
     const county = (raw.county || '').trim();
     const quantity = (raw.quantity || '').trim();
     const price = (raw.price || '').trim();
+    const preferredContactRaw = (raw.preferred_contact || 'email').trim().toLowerCase();
+    const preferredContact = preferredContactRaw || 'email';
 
     const errors: string[] = [];
     if (!title) errors.push('Missing title');
@@ -39,8 +50,13 @@ export default function BulkUploadForm({ defaultCounty }: { defaultCounty: strin
     else if (!COUNTIES.includes(county)) errors.push(`Unknown county "${county}"`);
     if (!price) errors.push('Missing price');
     else if (isNaN(Number(price)) || Number(price) < 0) errors.push('Price must be a positive number');
+    if (!CONTACT_OPTIONS.includes(preferredContact)) {
+      errors.push(`preferred_contact must be email, phone, or both`);
+    } else if ((preferredContact === 'phone' || preferredContact === 'both') && !hasPhone) {
+      errors.push('No phone number on your account, add one or use "email"');
+    }
 
-    return { title, description, category, county, quantity, price, errors };
+    return { title, description, category, county, quantity, price, preferredContact, errors };
   }
 
   function handleFile(file: File | undefined) {
@@ -82,6 +98,7 @@ export default function BulkUploadForm({ defaultCounty }: { defaultCounty: strin
         county: r.county,
         quantity: r.quantity,
         price: r.price,
+        preferredContact: r.preferredContact,
       })),
       defaultCounty
     );
@@ -99,16 +116,26 @@ export default function BulkUploadForm({ defaultCounty }: { defaultCounty: strin
       <div className="request-box">
         <h2 className="admin-section-title">1. Download the template</h2>
         <p className="request-box-sub">
-          Fill it in using Excel, Google Sheets, or Numbers, then save or export as CSV before
-          uploading it below.
+          The Excel version has real dropdowns for category, county, and preferred contact, so
+          you can't type something that doesn't match. Fill it in, then save or export as CSV
+          before uploading below.
         </p>
-        <a href="/bulk-upload-template.csv" download className="btn btn-secondary btn-sm">
-          Download CSV Template
-        </a>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <a href="/bulk-upload-template.xlsx" download className="btn btn-primary btn-sm">
+            Download Excel Template (with dropdowns)
+          </a>
+          <a href="/bulk-upload-template.csv" download className="btn btn-ghost btn-sm">
+            Download plain CSV instead
+          </a>
+        </div>
       </div>
 
       <div className="request-box" style={{ marginTop: '20px' }}>
         <h2 className="admin-section-title">2. Upload your filled-in file</h2>
+        <p className="request-box-sub">
+          If you used the Excel template, save it as CSV first (File → Save As, or Download → CSV
+          in Google Sheets), then upload that CSV here.
+        </p>
         <div className="file-field">
           Select your completed CSV file
           <input type="file" accept=".csv" onChange={(e) => handleFile(e.target.files?.[0])} />
@@ -130,6 +157,7 @@ export default function BulkUploadForm({ defaultCounty }: { defaultCounty: strin
                   <th>Category</th>
                   <th>County</th>
                   <th>Price</th>
+                  <th>Contact</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -140,6 +168,7 @@ export default function BulkUploadForm({ defaultCounty }: { defaultCounty: strin
                     <td>{row.category || '—'}</td>
                     <td>{row.county || '—'}</td>
                     <td>{row.price ? `€${row.price}` : '—'}</td>
+                    <td>{row.preferredContact}</td>
                     <td>
                       {row.errors.length === 0 ? (
                         <span className="billing-badge billing-active">Ready</span>
