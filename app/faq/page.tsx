@@ -19,7 +19,7 @@ const FAQS = [
   },
   {
     q: 'What\u2019s the buying group option about?',
-    a: 'If you\u2019re part of a buying group like United Hardware or similar, you can set that in Account. Once it\u2019s reviewed and approved, every time you list stock or post a request you get the choice to share it with everyone on SwapYard, or keep it visible only to other verified outlets in your own group. It\u2019s entirely optional, and claims are checked before they unlock group-only sharing.',
+    a: 'If you\u2019re part of a buying group, such as United Hardware, Expert Hardware, Amalgamated Hardware, or Allied Merchants, you can set that in Account. Once it\u2019s reviewed and approved, every time you list stock or post a request you get the choice to share it with everyone on SwapYard, or keep it visible only to other verified outlets in your own group. It\u2019s entirely optional, and claims are checked before they unlock group-only sharing.',
   },
   {
     q: 'Does SwapYard take a commission?',
