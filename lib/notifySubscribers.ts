@@ -7,6 +7,8 @@ type NotifyParams = {
   title: string;
   excludeOutletId: string;
   url: string;
+  visibility?: string;
+  posterBuyingGroup?: string | null;
 };
 
 export async function notifyMatchingSubscribers({
@@ -15,13 +17,15 @@ export async function notifyMatchingSubscribers({
   title,
   excludeOutletId,
   url,
+  visibility = 'all',
+  posterBuyingGroup = null,
 }: NotifyParams) {
   const admin = createAdminClient();
 
   // Find outlets who want push notifications and whose preferences match
   const { data: matchingOutlets } = await admin
     .from('profiles')
-    .select('id, notify_categories, notify_county_only, county')
+    .select('id, notify_categories, notify_county_only, county, buying_group')
     .eq('push_enabled', true)
     .neq('id', excludeOutletId);
 
@@ -31,7 +35,9 @@ export async function notifyMatchingSubscribers({
     .filter((o) => {
       const categoryOk = !o.notify_categories?.length || o.notify_categories.includes(category);
       const countyOk = !o.notify_county_only || o.county === county;
-      return categoryOk && countyOk;
+      const groupOk =
+        visibility !== 'group' || (posterBuyingGroup && o.buying_group === posterBuyingGroup);
+      return categoryOk && countyOk && groupOk;
     })
     .map((o) => o.id);
 

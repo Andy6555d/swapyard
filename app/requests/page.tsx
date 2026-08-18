@@ -21,7 +21,7 @@ export default async function RequestsPage({
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('county')
+    .select('county, buying_group')
     .eq('id', user.id)
     .single();
 
@@ -81,6 +81,21 @@ export default async function RequestsPage({
               </select>
             </div>
           </div>
+          {profile?.buying_group && (
+            <div className="field">
+              <label>Who can see this request?</label>
+              <div className="radio-group">
+                <label className="radio-option">
+                  <input type="radio" name="visibility" value="all" defaultChecked />
+                  <span>Everyone on SwapYard</span>
+                </label>
+                <label className="radio-option">
+                  <input type="radio" name="visibility" value="group" />
+                  <span>{profile.buying_group} members only</span>
+                </label>
+              </div>
+            </div>
+          )}
           <SubmitButton pendingText="Posting…" className="btn btn-primary">Post Request</SubmitButton>
         </form>
       </div>
@@ -93,7 +108,10 @@ export default async function RequestsPage({
           {(requests ?? []).map((r: any) => (
             <div className="card" key={r.id}>
               <div className="card-body">
-                <div className="card-cat">{r.category}</div>
+                <div className="card-cat">
+                  {r.category}
+                  {r.visibility === 'group' && <span className="admin-badge">GROUP ONLY</span>}
+                </div>
                 <p className="card-title">{r.title}</p>
                 {r.description && <p className="card-desc">{r.description}</p>}
                 <div className="card-foot">

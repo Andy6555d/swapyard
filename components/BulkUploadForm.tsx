@@ -13,17 +13,21 @@ type ParsedRow = {
   quantity: string;
   price: string;
   preferredContact: string;
+  visibility: string;
   errors: string[];
 };
 
 const CONTACT_OPTIONS = ['email', 'phone', 'both'];
+const VISIBILITY_OPTIONS = ['all', 'group'];
 
 export default function BulkUploadForm({
   defaultCounty,
   hasPhone,
+  buyingGroup,
 }: {
   defaultCounty: string;
   hasPhone: boolean;
+  buyingGroup: string | null;
 }) {
   const [rows, setRows] = useState<ParsedRow[]>([]);
   const [parsing, setParsing] = useState(false);
@@ -40,6 +44,8 @@ export default function BulkUploadForm({
     const price = (raw.price || '').trim();
     const preferredContactRaw = (raw.preferred_contact || 'email').trim().toLowerCase();
     const preferredContact = preferredContactRaw || 'email';
+    const visibilityRaw = (raw.visibility || 'all').trim().toLowerCase();
+    const visibility = visibilityRaw || 'all';
 
     const errors: string[] = [];
     if (!title) errors.push('Missing title');
@@ -55,8 +61,13 @@ export default function BulkUploadForm({
     } else if ((preferredContact === 'phone' || preferredContact === 'both') && !hasPhone) {
       errors.push('No phone number on your account, add one or use "email"');
     }
+    if (!VISIBILITY_OPTIONS.includes(visibility)) {
+      errors.push('visibility must be all or group');
+    } else if (visibility === 'group' && !buyingGroup) {
+      errors.push('You have no buying group set, use "all" or set one in Account');
+    }
 
-    return { title, description, category, county, quantity, price, preferredContact, errors };
+    return { title, description, category, county, quantity, price, preferredContact, visibility, errors };
   }
 
   function handleFile(file: File | undefined) {
@@ -99,6 +110,7 @@ export default function BulkUploadForm({
         quantity: r.quantity,
         price: r.price,
         preferredContact: r.preferredContact,
+        visibility: r.visibility,
       })),
       defaultCounty
     );
@@ -158,6 +170,7 @@ export default function BulkUploadForm({
                   <th>County</th>
                   <th>Price</th>
                   <th>Contact</th>
+                  <th>Visible To</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -169,6 +182,7 @@ export default function BulkUploadForm({
                     <td>{row.county || '—'}</td>
                     <td>{row.price ? `€${row.price}` : '—'}</td>
                     <td>{row.preferredContact}</td>
+                    <td>{row.visibility === 'group' ? 'Group' : 'Everyone'}</td>
                     <td>
                       {row.errors.length === 0 ? (
                         <span className="billing-badge billing-active">Ready</span>

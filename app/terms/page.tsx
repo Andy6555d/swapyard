@@ -22,6 +22,15 @@ export default function TermsPage() {
           behalf of your outlet.
         </p>
 
+        <h2>Buying groups</h2>
+        <p>
+          You may optionally set a buying group on your account, and choose to make a listing or
+          request visible only to outlets who have set the same one. This is entirely self
+          reported. SwapYard does not verify buying group membership, and setting a buying group
+          does not mean that group has endorsed, partnered with, or is in any way affiliated with
+          SwapYard. It is simply a filter you can use to control who sees what you post.
+        </p>
+
         <h2>Your account</h2>
         <p>
           You&apos;re responsible for keeping your login details secure and for all activity

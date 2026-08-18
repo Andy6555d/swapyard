@@ -11,14 +11,16 @@ export default async function ListStockPage() {
 
   let defaultCounty = '';
   let hasPhone = false;
+  let buyingGroup: string | null = null;
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('county, contact_phone')
+      .select('county, contact_phone, buying_group')
       .eq('id', user.id)
       .single();
     defaultCounty = profile?.county ?? '';
     hasPhone = !!profile?.contact_phone;
+    buyingGroup = profile?.buying_group ?? null;
   }
 
   return (
@@ -28,7 +30,7 @@ export default async function ListStockPage() {
         <span className="sub">TAKES ~2 MINUTES</span>
       </div>
       <div style={{ maxWidth: 560 }}>
-        <ListStockForm defaultCounty={defaultCounty} hasPhone={hasPhone} />
+        <ListStockForm defaultCounty={defaultCounty} hasPhone={hasPhone} buyingGroup={buyingGroup} />
       </div>
       <p style={{ marginTop: '20px', maxWidth: 560 }}>
         <a href="/list/bulk" className="contact-link">Got a lot to list at once? Try bulk upload →</a>

@@ -14,6 +14,7 @@ type BulkRow = {
   quantity: string;
   price: string;
   preferredContact: string;
+  visibility: string;
 };
 
 export async function createBulkListings(rows: BulkRow[], fallbackCounty: string) {
@@ -25,11 +26,12 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('contact_phone, outlet_name')
+    .select('contact_phone, outlet_name, buying_group')
     .eq('id', user.id)
     .single();
   const hasPhone = !!profile?.contact_phone;
   const outletName = profile?.outlet_name || 'An outlet';
+  const buyingGroup = profile?.buying_group ?? null;
 
   const validRows = rows.filter((r) => {
     const priceNum = Number(r.price);
@@ -52,6 +54,7 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
       ? r.preferredContact
       : 'email';
     const safeContact = (contact === 'phone' || contact === 'both') && !hasPhone ? 'email' : contact;
+    const visibility = r.visibility === 'group' && buyingGroup ? 'group' : 'all';
 
     return {
       outlet_id: user.id,
@@ -62,24 +65,28 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
       quantity: r.quantity?.trim() || null,
       price: Number(r.price),
       preferred_contact: safeContact,
+      visibility,
       image_urls: [],
     };
   });
 
-  const { data: inserted, error } = await supabase.from('listings').insert(toInsert).select('id, category, county, title');
+  const { data: inserted, error } = await supabase
+    .from('listings')
+    .insert(toInsert)
+    .select('id, category, county, title, visibility');
 
   if (error || !inserted) {
     return { success: false, count: 0 };
   }
 
-  const groups = new Map<string, { category: string; county: string; count: number }>();
+  const groups = new Map<string, { category: string; county: string; visibility: string; count: number }>();
   for (const listing of inserted) {
-    const key = `${listing.category}|${listing.county}`;
+    const key = `${listing.category}|${listing.county}|${listing.visibility}`;
     const existing = groups.get(key);
     if (existing) {
       existing.count += 1;
     } else {
-      groups.set(key, { category: listing.category, county: listing.county, count: 1 });
+      groups.set(key, { category: listing.category, county: listing.county, visibility: listing.visibility, count: 1 });
     }
   }
 
@@ -91,6 +98,8 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
         title: `${outletName} added ${g.count} ${g.category} item${g.count > 1 ? 's' : ''}`,
         excludeOutletId: user.id,
         url: `/browse`,
+        visibility: g.visibility,
+        posterBuyingGroup: buyingGroup,
       }).catch(() => {})
     )
   );

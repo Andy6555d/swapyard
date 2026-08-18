@@ -22,6 +22,7 @@ export default async function BrowsePage() {
     price: item.price,
     image_urls: item.image_urls ?? [],
     status: item.status,
+    visibility: item.visibility ?? 'all',
     preferred_contact: item.preferred_contact ?? 'email',
     outlet_name: item.profiles?.outlet_name ?? 'Outlet',
     contact_email: item.profiles?.contact_email ?? '',

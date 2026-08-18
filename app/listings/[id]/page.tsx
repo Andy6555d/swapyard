@@ -47,7 +47,10 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
           <div className="tag" style={{ position: 'static', display: 'inline-flex', transform: 'none', marginBottom: '14px' }}>
             €{Number(listing.price).toLocaleString()}
           </div>
-          <div className="card-cat">{listing.category}</div>
+          <div className="card-cat">
+            {listing.category}
+            {listing.visibility === 'group' && <span className="admin-badge">GROUP ONLY</span>}
+          </div>
           <h1>{listing.title}</h1>
           {listing.quantity && <p className="card-meta">Quantity: {listing.quantity}</p>}
           <p className="listing-desc">{listing.description}</p>

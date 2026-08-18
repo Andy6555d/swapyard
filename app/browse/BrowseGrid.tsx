@@ -14,6 +14,7 @@ type Listing = {
   price: number;
   image_urls: string[];
   status: string;
+  visibility: string;
   preferred_contact: string;
   outlet_name: string;
   contact_email: string;
@@ -94,7 +95,10 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
                   )}
                 </div>
                 <div className="card-body">
-                  <div className="card-cat">{item.category}</div>
+                  <div className="card-cat">
+                    {item.category}
+                    {item.visibility === 'group' && <span className="admin-badge">GROUP ONLY</span>}
+                  </div>
                   <p className="card-title">{item.title}</p>
                   <p className="card-desc">{item.description}</p>
                   {item.quantity && <p className="card-meta">Quantity: {item.quantity}</p>}

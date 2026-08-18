@@ -104,3 +104,12 @@ export const COUNTIES = [
   'Waterford', 'Westmeath', 'Wexford', 'Wicklow', 'Antrim', 'Armagh', 'Down',
   'Fermanagh', 'Londonderry', 'Tyrone',
 ];
+
+// Buying groups an outlet can optionally belong to. Add more here as needed,
+// this list is used everywhere a buying group is selected across the site.
+export const BUYING_GROUPS = [
+  'United Hardware',
+  'Expert Hardware',
+  'Amalgamated Hardware',
+  'Allied Merchants',
+];

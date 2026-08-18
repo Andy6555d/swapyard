@@ -74,6 +74,14 @@ export async function createListing(formData: FormData) {
   const quantity = formData.get('quantity') as string;
   const price = parseFloat(formData.get('price') as string);
   const preferredContact = (formData.get('preferredContact') as string) || 'email';
+  const requestedVisibility = (formData.get('visibility') as string) || 'all';
+
+  const { data: ownProfile } = await supabase
+    .from('profiles')
+    .select('buying_group')
+    .eq('id', user.id)
+    .single();
+  const visibility = requestedVisibility === 'group' && ownProfile?.buying_group ? 'group' : 'all';
 
   let imageUrls: string[] = [];
   try {
@@ -90,6 +98,7 @@ export async function createListing(formData: FormData) {
       description,
       category,
       preferred_contact: preferredContact,
+      visibility,
       county,
       quantity,
       price,
@@ -109,6 +118,8 @@ export async function createListing(formData: FormData) {
       title,
       excludeOutletId: user.id,
       url: `/listings/${newListing.id}`,
+      visibility,
+      posterBuyingGroup: ownProfile?.buying_group ?? null,
     }).catch(() => {});
   }
 
@@ -237,6 +248,14 @@ export async function createRequest(formData: FormData) {
   const description = formData.get('description') as string;
   const category = formData.get('category') as string;
   const county = formData.get('county') as string;
+  const requestedVisibility = (formData.get('visibility') as string) || 'all';
+
+  const { data: ownProfile } = await supabase
+    .from('profiles')
+    .select('buying_group')
+    .eq('id', user.id)
+    .single();
+  const visibility = requestedVisibility === 'group' && ownProfile?.buying_group ? 'group' : 'all';
 
   const { data: newRequest, error } = await supabase
     .from('requests')
@@ -245,6 +264,7 @@ export async function createRequest(formData: FormData) {
       title,
       description,
       category,
+      visibility,
       county,
     })
     .select('id')
@@ -261,6 +281,8 @@ export async function createRequest(formData: FormData) {
       title: `Request: ${title}`,
       excludeOutletId: user.id,
       url: `/requests`,
+      visibility,
+      posterBuyingGroup: ownProfile?.buying_group ?? null,
     }).catch(() => {});
   }
 

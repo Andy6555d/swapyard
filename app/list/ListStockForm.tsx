@@ -6,7 +6,15 @@ import { createListing } from '../actions';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import SubmitButton from '@/components/SubmitButton';
 
-export default function ListStockForm({ defaultCounty, hasPhone }: { defaultCounty: string; hasPhone: boolean }) {
+export default function ListStockForm({
+  defaultCounty,
+  hasPhone,
+  buyingGroup,
+}: {
+  defaultCounty: string;
+  hasPhone: boolean;
+  buyingGroup: string | null;
+}) {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
@@ -139,6 +147,21 @@ export default function ListStockForm({ defaultCounty, hasPhone }: { defaultCoun
           <p className="upload-status">Add a phone number to your account to offer phone contact.</p>
         )}
       </div>
+      {buyingGroup && (
+        <div className="field">
+          <label>Who can see this listing?</label>
+          <div className="radio-group">
+            <label className="radio-option">
+              <input type="radio" name="visibility" value="all" defaultChecked />
+              <span>Everyone on SwapYard</span>
+            </label>
+            <label className="radio-option">
+              <input type="radio" name="visibility" value="group" />
+              <span>{buyingGroup} members only</span>
+            </label>
+          </div>
+        </div>
+      )}
       <div className="field">
         <label htmlFor="images">Photos (up to 6)</label>
         <div className="file-field">

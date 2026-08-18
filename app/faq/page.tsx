@@ -18,6 +18,10 @@ const FAQS = [
     a: 'No. Your email and phone are never visible on the public internet or to search engines. Other logged-in, paying members have to actively click \u201cShow contact\u201d to see them \u2014 nothing is displayed openly.',
   },
   {
+    q: 'What\\u2019s the buying group option about?',
+    a: 'If you\\u2019re part of a buying group like United Hardware or similar, you can set that in Account. It doesn\\u2019t do anything on its own, but once set, every time you list stock or post a request you get the choice to share it with everyone on SwapYard, or keep it visible only to outlets in your own group. It\\u2019s entirely optional and self reported, SwapYard doesn\\u2019t verify group membership.',
+  },
+  {
     q: 'Does SwapYard take a commission?',
     a: 'No, zero, ever. Your membership fee is the only cost. Whatever price you agree with the other outlet, you keep every cent of it.',
   },

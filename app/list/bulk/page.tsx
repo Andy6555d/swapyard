@@ -11,14 +11,16 @@ export default async function BulkUploadPage() {
 
   let defaultCounty = '';
   let hasPhone = false;
+  let buyingGroup: string | null = null;
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('county, contact_phone')
+      .select('county, contact_phone, buying_group')
       .eq('id', user.id)
       .single();
     defaultCounty = profile?.county ?? '';
     hasPhone = !!profile?.contact_phone;
+    buyingGroup = profile?.buying_group ?? null;
   }
 
   return (
@@ -33,7 +35,7 @@ export default async function BulkUploadPage() {
         directly in My Listings.
       </p>
       <div style={{ maxWidth: 640 }}>
-        <BulkUploadForm defaultCounty={defaultCounty} hasPhone={hasPhone} />
+        <BulkUploadForm defaultCounty={defaultCounty} hasPhone={hasPhone} buyingGroup={buyingGroup} />
       </div>
       <p style={{ marginTop: '24px' }}>
         <a href="/list" className="contact-link">Prefer to list one item at a time? →</a>

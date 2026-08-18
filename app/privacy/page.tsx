@@ -17,6 +17,7 @@ export default function PrivacyPage() {
         <ul>
           <li>Outlet name, county, and contact email (required at registration)</li>
           <li>Contact phone number (optional, if you choose to provide it)</li>
+          <li>Your buying group, if any (optional, set in Account). This lets you choose, listing by listing, whether to share with everyone on SwapYard or only with outlets in the same buying group</li>
           <li>Content you post: listing titles, descriptions, categories, prices, quantities, and photos, and any requests you post</li>
           <li>Your account password. This is handled by our authentication provider (Supabase) and is never visible to us in plain text</li>
           <li>Basic activity on listings and requests, specifically when you click &quot;Show contact&quot; on a listing or &quot;I have this&quot; on a request, we record that this happened, tied to your account</li>
@@ -50,6 +51,7 @@ export default function PrivacyPage() {
         <h2>Who can see your information</h2>
         <ul>
           <li>Other logged-in outlets on SwapYard can see your outlet name, county, and contact details attached to anything you list or request</li>
+          <li>If you mark a listing or request as visible only to your buying group, only outlets who have set the same buying group on their own account can see it. Everyone else, including outlets outside that group, cannot</li>
           <li>If you list or post a request, you can see activity on that specific listing or request, such as how many times contact was revealed, but not who did it individually</li>
           <li>The platform administrator can see all outlet, listing, and activity data, and can take actions such as resetting a password or removing an account if needed</li>
           <li>Nothing on SwapYard is visible to the public internet or search engines. An account is required to view listings, requests, or outlet details</li>
