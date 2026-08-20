@@ -153,7 +153,7 @@ create table listing_events (
   listing_id uuid references listings(id) on delete cascade,
   request_id uuid references requests(id) on delete cascade,
   event_type text not null check (event_type in ('contact_revealed', 'request_interest')),
-  viewer_id uuid references profiles(id),
+  viewer_id uuid references profiles(id) on delete set null,
   created_at timestamptz default now()
 );
 
@@ -205,7 +205,7 @@ create table content_reports (
   id uuid default uuid_generate_v4() primary key,
   listing_id uuid references listings(id) on delete cascade,
   request_id uuid references requests(id) on delete cascade,
-  reporter_id uuid references profiles(id) not null,
+  reporter_id uuid references profiles(id) on delete set null,
   reason text not null,
   detail text,
   status text default 'open' check (status in ('open', 'reviewed', 'dismissed')),
@@ -228,9 +228,9 @@ create policy "Only admins can view reports"
 -- ============================================================
 create table admin_action_log (
   id uuid default uuid_generate_v4() primary key,
-  admin_id uuid references profiles(id),
+  admin_id uuid references profiles(id) on delete set null,
   action text not null,
-  target_outlet_id uuid references profiles(id),
+  target_outlet_id uuid references profiles(id) on delete set null,
   detail text,
   created_at timestamptz default now()
 );
