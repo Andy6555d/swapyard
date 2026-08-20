@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import {
   adminSetPassword,
@@ -36,6 +37,12 @@ export default async function AdminPage({
   if (!myProfile?.is_admin) redirect('/');
 
   const { data: outlets } = await supabase.from('profiles').select('*').order('outlet_name');
+
+  const admin = createAdminClient();
+  const { data: authUsers } = await admin.auth.admin.listUsers({ perPage: 1000 });
+  const emailConfirmedMap = new Map(
+    (authUsers?.users ?? []).map((u) => [u.id, !!u.email_confirmed_at])
+  );
   const { data: listings } = await supabase
     .from('listings')
     .select('*, profiles(outlet_name)')
@@ -168,7 +175,15 @@ export default async function AdminPage({
                   {o.is_admin && <span className="admin-badge">ADMIN</span>}
                 </td>
                 <td>{o.county}</td>
-                <td>{o.contact_email}</td>
+                <td>
+                  {o.contact_email}
+                  <br />
+                  {emailConfirmedMap.get(o.id) ? (
+                    <span className="billing-badge billing-active">Verified</span>
+                  ) : (
+                    <span className="billing-badge billing-past_due">Not confirmed</span>
+                  )}
+                </td>
                 <td>{o.contact_phone || '—'}</td>
                 <td>
                   <span className={`billing-badge billing-${o.subscription_status || 'inactive'}`}>
