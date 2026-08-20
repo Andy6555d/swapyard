@@ -34,7 +34,7 @@ export async function signup(formData: FormData) {
     redirect('/signup?error=' + encodeURIComponent('You must agree to the Terms of Service and Privacy Policy to register.'));
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -54,6 +54,13 @@ export async function signup(formData: FormData) {
     'New SwapYard signup',
     `<p>New outlet registered:</p><p><strong>${outletName}</strong> (${county})<br>${email}${contactPhone ? `<br>${contactPhone}` : ''}</p>`
   ).catch(() => {});
+
+  // If Confirm Email is on, signUp() succeeds but creates no active
+  // session until the link is clicked. Send them to a clear
+  // "check your email" screen instead of assuming they're logged in.
+  if (!data.session) {
+    redirect('/signup/check-email');
+  }
 
   revalidatePath('/', 'layout');
   redirect('/');
