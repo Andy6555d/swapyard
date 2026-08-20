@@ -1,5 +1,5 @@
 import { signup } from '../actions';
-import { COUNTIES } from '@/lib/constants';
+import { COUNTIES, BUYING_GROUPS } from '@/lib/constants';
 import SubmitButton from '@/components/SubmitButton';
 
 export default async function SignupPage({
@@ -28,6 +28,20 @@ export default async function SignupPage({
                 <option key={c} value={c}>{c}</option>
               ))}
             </select>
+          </div>
+          <div className="field">
+            <label htmlFor="buyingGroup">Buying group (optional)</label>
+            <select id="buyingGroup" name="buyingGroup" defaultValue="none">
+              <option value="none">None / Independent</option>
+              {BUYING_GROUPS.map((g) => (
+                <option key={g} value={g}>{g}</option>
+              ))}
+            </select>
+            <p className="upload-status" style={{ marginTop: '6px' }}>
+              If you&apos;re part of a buying group, this lets you choose later whether to share
+              a listing with everyone or just your own group. Claims are reviewed before that
+              option unlocks, you can also set or change this anytime in Account.
+            </p>
           </div>
           <div className="field">
             <label htmlFor="contactPhone">Contact phone (optional)</label>

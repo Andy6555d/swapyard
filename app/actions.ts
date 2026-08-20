@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { notifyMatchingSubscribers } from '@/lib/notifySubscribers';
@@ -28,6 +29,7 @@ export async function signup(formData: FormData) {
   const outletName = formData.get('outletName') as string;
   const county = formData.get('county') as string;
   const contactPhone = formData.get('contactPhone') as string;
+  const buyingGroup = formData.get('buyingGroup') as string;
   const agreeTerms = formData.get('agreeTerms');
 
   if (agreeTerms !== 'yes') {
@@ -50,9 +52,17 @@ export async function signup(formData: FormData) {
     redirect('/signup?error=' + encodeURIComponent(error.message));
   }
 
+  // Set buying group via the admin client, not the trigger. This works
+  // regardless of whether a session exists yet (Confirm Email may be on),
+  // and avoids touching the signup trigger function again.
+  if (data.user && buyingGroup && buyingGroup !== 'none') {
+    const admin = createAdminClient();
+    await admin.from('profiles').update({ buying_group: buyingGroup }).eq('id', data.user.id);
+  }
+
   sendAdminNotification(
     'New SwapYard signup',
-    `<p>New outlet registered:</p><p><strong>${outletName}</strong> (${county})<br>${email}${contactPhone ? `<br>${contactPhone}` : ''}</p>`
+    `<p>New outlet registered:</p><p><strong>${outletName}</strong> (${county})<br>${email}${contactPhone ? `<br>${contactPhone}` : ''}${buyingGroup && buyingGroup !== 'none' ? `<br>Buying group: ${buyingGroup}` : ''}</p>`
   ).catch(() => {});
 
   // If Confirm Email is on, signUp() succeeds but creates no active
