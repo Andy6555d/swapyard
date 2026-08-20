@@ -39,6 +39,16 @@ export default function TermsPage() {
           authorization.
         </p>
 
+        <h2>Staying in touch</h2>
+        <p>
+          We&apos;ll always email you important account and service notices, such as password
+          resets or billing confirmations. Beyond that, we may also contact you directly by
+          email about new SwapYard features, platform updates, and related sister sites we run
+          under the same operator, such as TradeYard or StockYard. You can opt out of these at
+          any time by emailing hello@swapyard.ie, this won&apos;t affect essential account or
+          service emails.
+        </p>
+
         <h2>Listings and requests</h2>
         <p>
           You&apos;re responsible for the accuracy of anything you post, including descriptions,

@@ -40,6 +40,11 @@ export default function PrivacyPage() {
           which categories and areas are seeing the most activity. It is never sold, shared with
           third parties, or used for advertising.
         </p>
+        <p>
+          We may also use your contact email to tell you about new SwapYard features or related
+          sister sites we run, such as TradeYard or StockYard. This is never sold or shared with
+          third parties, and you can opt out at any time by emailing hello@swapyard.ie.
+        </p>
 
         <h2>Payment information</h2>
         <p>

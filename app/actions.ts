@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { notifyMatchingSubscribers } from '@/lib/notifySubscribers';
+import { sendAdminNotification } from '@/lib/sendEmail';
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -48,6 +49,11 @@ export async function signup(formData: FormData) {
   if (error) {
     redirect('/signup?error=' + encodeURIComponent(error.message));
   }
+
+  sendAdminNotification(
+    'New SwapYard signup',
+    `<p>New outlet registered:</p><p><strong>${outletName}</strong> (${county})<br>${email}${contactPhone ? `<br>${contactPhone}` : ''}</p>`
+  ).catch(() => {});
 
   revalidatePath('/', 'layout');
   redirect('/');
@@ -124,6 +130,11 @@ export async function createListing(formData: FormData) {
       visibility,
       posterBuyingGroup: ownProfile?.buying_group ?? null,
     }).catch(() => {});
+
+    sendAdminNotification(
+      'New SwapYard listing',
+      `<p><strong>${title}</strong></p><p>Category: ${category}<br>County: ${county}<br>Price: €${price}</p>`
+    ).catch(() => {});
   }
 
   revalidatePath('/');
