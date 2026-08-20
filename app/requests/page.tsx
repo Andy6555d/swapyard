@@ -4,6 +4,7 @@ import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants
 import { redirect } from 'next/navigation';
 import SubmitButton from '@/components/SubmitButton';
 import RequestInterestLink from './RequestInterestLink';
+import ReportButton from '@/components/ReportButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -138,6 +139,11 @@ export default async function RequestsPage({
                     <RequestInterestLink requestId={r.id} email={r.profiles?.contact_email} />
                   )}
                 </div>
+                {r.outlet_id !== user.id && (
+                  <div style={{ marginTop: '8px', textAlign: 'right' }}>
+                    <ReportButton requestId={r.id} />
+                  </div>
+                )}
               </div>
             </div>
           ))}

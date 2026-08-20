@@ -23,6 +23,8 @@ export default function PrivacyPage() {
           <li>Basic activity on listings and requests, specifically when you click &quot;Show contact&quot; on a listing or &quot;I have this&quot; on a request, we record that this happened, tied to your account</li>
           <li>If you enable push notifications, we store a device subscription reference and your chosen category and county preferences, so we know what to notify you about</li>
           <li>If you subscribe, payment details processed by our payment provider, Stripe. We never see or store your full card number</li>
+          <li>If you report a listing or request, we record the reason you selected, any detail you add, and that it was you who reported it</li>
+          <li>We keep an internal log of administrative actions taken on accounts, such as password resets or access changes, recording which admin took the action and when</li>
         </ul>
 
         <h2>How it&apos;s used</h2>
@@ -54,6 +56,7 @@ export default function PrivacyPage() {
           <li>If you mark a listing or request as visible only to your buying group, only outlets who have set the same buying group on their own account can see it. Everyone else, including outlets outside that group, cannot</li>
           <li>If you list or post a request, you can see activity on that specific listing or request, such as how many times contact was revealed, but not who did it individually</li>
           <li>The platform administrator can see all outlet, listing, and activity data, and can take actions such as resetting a password or removing an account if needed</li>
+          <li>If you report a listing or request, only the administrator can see that you made the report. The outlet you reported is never told who reported them</li>
           <li>Nothing on SwapYard is visible to the public internet or search engines. An account is required to view listings, requests, or outlet details</li>
         </ul>
 

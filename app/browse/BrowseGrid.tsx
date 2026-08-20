@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { CATEGORY_GROUPS, UNGROUPED_CATEGORIES, COUNTIES } from '@/lib/constants';
 import ContactReveal from '@/components/ContactReveal';
+import ReportButton from '@/components/ReportButton';
 
 type Listing = {
   id: string;
@@ -113,6 +114,9 @@ export default function BrowseGrid({ listings }: { listings: Listing[] }) {
                     preferredContact={item.preferred_contact}
                     listingId={item.id}
                   />
+                </div>
+                <div style={{ marginTop: '8px', textAlign: 'right' }}>
+                  <ReportButton listingId={item.id} />
                 </div>
               </div>
             </div>

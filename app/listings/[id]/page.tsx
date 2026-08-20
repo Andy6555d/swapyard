@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import ContactReveal from '@/components/ContactReveal';
+import ReportButton from '@/components/ReportButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,6 +68,10 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               emailClassName="btn btn-secondary btn-sm"
               phoneClassName="btn btn-primary btn-sm"
             />
+          </div>
+
+          <div style={{ marginTop: '16px' }}>
+            <ReportButton listingId={listing.id} />
           </div>
         </div>
       </div>

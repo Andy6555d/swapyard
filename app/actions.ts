@@ -214,6 +214,33 @@ export async function deleteListing(formData: FormData) {
   revalidatePath('/my-listings');
 }
 
+export async function reportContent(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { success: false };
+
+  const listingId = (formData.get('listingId') as string) || null;
+  const requestId = (formData.get('requestId') as string) || null;
+  const reason = formData.get('reason') as string;
+  const detail = (formData.get('detail') as string) || null;
+
+  if (!reason || (!listingId && !requestId)) {
+    return { success: false };
+  }
+
+  await supabase.from('content_reports').insert({
+    listing_id: listingId,
+    request_id: requestId,
+    reporter_id: user.id,
+    reason,
+    detail,
+  });
+
+  return { success: true };
+}
+
 export async function logContactReveal(listingId: string) {
   const supabase = await createClient();
   const {

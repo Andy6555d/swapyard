@@ -85,6 +85,13 @@ export default function BulkUploadForm({
           setParsing(false);
           return;
         }
+        if (results.data.length > 200) {
+          setFileError(
+            `That file has ${results.data.length} rows. Bulk upload is capped at 200 at a time, please split it into smaller files.`
+          );
+          setParsing(false);
+          return;
+        }
         const parsed = (results.data as any[]).map(validateRow);
         setRows(parsed);
         setParsing(false);

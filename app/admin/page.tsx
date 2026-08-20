@@ -6,6 +6,8 @@ import {
   adminDeleteOutlet,
   adminDeleteListing,
   adminGrantAccess,
+  adminMarkReportReviewed,
+  adminDismissReport,
   adminRevokeAccess,
   adminVerifyBuyingGroup,
   adminUnverifyBuyingGroup,
@@ -39,6 +41,16 @@ export default async function AdminPage({
     .select('*, profiles(outlet_name)')
     .order('created_at', { ascending: false });
   const { data: requests } = await supabase.from('requests').select('status, fulfilled_via_swapyard');
+  const { data: actionLog } = await supabase
+    .from('admin_action_log')
+    .select('*, admin:admin_id(outlet_name), target:target_outlet_id(outlet_name)')
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const { data: reports } = await supabase
+    .from('content_reports')
+    .select('*, listings(title), requests(title), reporter:reporter_id(outlet_name)')
+    .eq('status', 'open')
+    .order('created_at', { ascending: false });
 
   const confirmedSales = (listings ?? []).filter((l) => l.status === 'sold' && l.sold_via_swapyard === true);
   const confirmedValue = confirmedSales.reduce((sum, l) => sum + Number(l.price || 0), 0);
@@ -57,6 +69,57 @@ export default async function AdminPage({
 
       {params.error && <div className="error-box">{params.error}</div>}
       {params.success && <div className="success-box">{params.success}</div>}
+
+      {(reports ?? []).length > 0 && (
+        <>
+          <h2 className="admin-section-title" style={{ color: 'var(--brick)' }}>
+            Open Reports ({(reports ?? []).length})
+          </h2>
+          <div className="admin-table-wrap" style={{ marginBottom: '28px' }}>
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Reported</th>
+                  <th>Reason</th>
+                  <th>Detail</th>
+                  <th>Reported By</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {(reports ?? []).map((r: any) => (
+                  <tr key={r.id}>
+                    <td>
+                      {r.listing_id ? (
+                        <a href={`/listings/${r.listing_id}`} className="contact-link">
+                          {r.listings?.title ?? 'Listing'} →
+                        </a>
+                      ) : (
+                        <span>{r.requests?.title ?? 'Request'} (request)</span>
+                      )}
+                    </td>
+                    <td>{r.reason}</td>
+                    <td>{r.detail || '—'}</td>
+                    <td>{r.reporter?.outlet_name ?? '—'}</td>
+                    <td>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <form action={adminMarkReportReviewed}>
+                          <input type="hidden" name="reportId" value={r.id} />
+                          <button type="submit" className="btn btn-secondary btn-sm">Reviewed</button>
+                        </form>
+                        <form action={adminDismissReport}>
+                          <input type="hidden" name="reportId" value={r.id} />
+                          <button type="submit" className="btn btn-ghost btn-sm">Dismiss</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       <h2 className="admin-section-title">Confirmed Outcomes</h2>
       <div className="admin-table-wrap" style={{ padding: '20px', marginBottom: '28px' }}>
@@ -220,6 +283,37 @@ export default async function AdminPage({
                     </button>
                   </form>
                 </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 className="admin-section-title" style={{ marginTop: '36px' }}>Admin Action Log</h2>
+      <div className="admin-table-wrap">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>Admin</th>
+              <th>Action</th>
+              <th>Target Outlet</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(actionLog ?? []).length === 0 && (
+              <tr>
+                <td colSpan={5} style={{ color: 'var(--steel)' }}>No actions logged yet.</td>
+              </tr>
+            )}
+            {(actionLog ?? []).map((entry: any) => (
+              <tr key={entry.id}>
+                <td>{new Date(entry.created_at).toLocaleString('en-IE')}</td>
+                <td>{entry.admin?.outlet_name ?? '—'}</td>
+                <td>{entry.action.replace(/_/g, ' ')}</td>
+                <td>{entry.target?.outlet_name ?? '—'}</td>
+                <td>{entry.detail ?? '—'}</td>
               </tr>
             ))}
           </tbody>

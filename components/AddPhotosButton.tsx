@@ -35,10 +35,19 @@ export default function AddPhotosButton({
 
     const fileArray = Array.from(files).slice(0, remaining);
     const urls: string[] = [];
+    const skipped: string[] = [];
+    const MAX_SIZE = 8 * 1024 * 1024; // 8MB
 
     for (let i = 0; i < fileArray.length; i++) {
       const file = fileArray[i];
-      if (!file.type.startsWith('image/')) continue;
+      if (!file.type.startsWith('image/')) {
+        skipped.push(`${file.name} (not an image)`);
+        continue;
+      }
+      if (file.size > MAX_SIZE) {
+        skipped.push(`${file.name} (over 8MB)`);
+        continue;
+      }
       const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
       const fileName = `${user.id}/${Date.now()}-${i}-${safeName}`;
       const { error } = await supabase.storage.from('listing-images').upload(fileName, file);
@@ -50,8 +59,13 @@ export default function AddPhotosButton({
 
     if (urls.length > 0) {
       await addPhotosToListing(listingId, urls);
-      setStatus(`Added ${urls.length} photo${urls.length === 1 ? '' : 's'}`);
+      setStatus(
+        `Added ${urls.length} photo${urls.length === 1 ? '' : 's'}` +
+          (skipped.length > 0 ? `. Skipped: ${skipped.join(', ')}` : '')
+      );
       router.refresh();
+    } else if (skipped.length > 0) {
+      setStatus(`No photos added. Skipped: ${skipped.join(', ')}`);
     } else {
       setStatus('No photos were added.');
     }

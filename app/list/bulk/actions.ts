@@ -24,6 +24,10 @@ export async function createBulkListings(rows: BulkRow[], fallbackCounty: string
   } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
+  if (rows.length > 200) {
+    return { success: false, count: 0 };
+  }
+
   const { data: profile } = await supabase
     .from('profiles')
     .select('contact_phone, outlet_name, buying_group, buying_group_verified')

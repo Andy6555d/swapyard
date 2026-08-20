@@ -199,6 +199,49 @@ create policy "Users can delete their own push subscriptions"
   using (auth.uid() = outlet_id);
 
 -- ============================================================
+-- CONTENT REPORTS (notice-and-action mechanism)
+-- ============================================================
+create table content_reports (
+  id uuid default uuid_generate_v4() primary key,
+  listing_id uuid references listings(id) on delete cascade,
+  request_id uuid references requests(id) on delete cascade,
+  reporter_id uuid references profiles(id) not null,
+  reason text not null,
+  detail text,
+  status text default 'open' check (status in ('open', 'reviewed', 'dismissed')),
+  created_at timestamptz default now()
+);
+
+alter table content_reports enable row level security;
+
+create policy "Paid members can submit reports"
+  on content_reports for insert
+  to authenticated
+  with check (public.is_paid_member() and reporter_id = auth.uid());
+
+create policy "Only admins can view reports"
+  on content_reports for select
+  using (exists (select 1 from profiles where id = auth.uid() and is_admin = true));
+
+-- ============================================================
+-- ADMIN ACTION LOG
+-- ============================================================
+create table admin_action_log (
+  id uuid default uuid_generate_v4() primary key,
+  admin_id uuid references profiles(id),
+  action text not null,
+  target_outlet_id uuid references profiles(id),
+  detail text,
+  created_at timestamptz default now()
+);
+
+alter table admin_action_log enable row level security;
+
+create policy "Only admins can view the action log"
+  on admin_action_log for select
+  using (exists (select 1 from profiles where id = auth.uid() and is_admin = true));
+
+-- ============================================================
 -- FUNCTIONS
 -- ============================================================
 

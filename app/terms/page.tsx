@@ -83,7 +83,17 @@ export default function TermsPage() {
           <li>Use contact details found on SwapYard for spam or unrelated marketing</li>
           <li>Attempt to disrupt, scrape, or misuse the platform</li>
           <li>Post false, misleading, or deliberately inaccurate listings or requests</li>
+          <li>Submit false or malicious reports about another outlet&apos;s listing or request</li>
         </ul>
+
+        <h2>Reporting content</h2>
+        <p>
+          If you believe a listing or request breaches these terms, you can report it directly
+          from the listing or request page. Reports are reviewed by an administrator, who decides
+          what action, if any, to take. We don&apos;t guarantee a specific outcome or timeframe
+          for any report, and repeated false or malicious reports may result in your own account
+          being suspended.
+        </p>
 
         <h2>Your content</h2>
         <p>

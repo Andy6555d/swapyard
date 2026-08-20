@@ -39,7 +39,15 @@ const FAQS = [
   },
   {
     q: 'What if there\u2019s a problem with another outlet?',
-    a: 'Since deals happen directly between outlets, SwapYard isn\u2019t able to resolve individual disputes \u2014 same as agreeing anything directly with another business. If you believe an account is being misused, let us know at hello@swapyard.ie and we\u2019ll look into it.',
+    a: 'Since deals happen directly between outlets, SwapYard isn\u2019t able to resolve individual disputes, same as agreeing anything directly with another business. If you believe an account is being misused, let us know at hello@swapyard.ie and we\u2019ll look into it.',
+  },
+  {
+    q: 'How do I report a listing or request?',
+    a: 'Every listing and request has a small Report link. Click it, pick a reason, add any detail if you want, and submit. An administrator reviews it and decides what action to take.',
+  },
+  {
+    q: 'Will the outlet know I reported them?',
+    a: 'No. Only the administrator can see who submitted a report. The outlet being reported is never told who reported them.',
   },
 ];
 
